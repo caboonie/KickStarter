@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+<p> Your Current Balance: {{wallet.current_value}}</p>
+
+
+<h1>{{product.team.name}}</h1>
+
+
+
+
+<iframe width="420" height="345" src="{{product.video}}">
+</iframe>
+<p>
+{{product.description}}
+</p>
+
+{%if product.website_url != None %}
+<a href={{product.website_url}} target="_blank">{{product.website_url}}</a>
+{%endif%}
+<form action="{{ url_for('makeAnInvestment', product_id = product.id) }}" method = 'post'>
+  Amount:<br>
+  <input type="number" name="amount"><br>
+  
+   <input type="submit" value="Invest in this Startup">
+</form>
+
+
+{%endblock%}

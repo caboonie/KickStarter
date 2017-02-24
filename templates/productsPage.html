@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<p> Your Current Balance: {{wallet.current_value}}</p>
+
+{% for product in products %}
+<a href = "{{url_for('showProduct', product_id = product.id)}}">
+<div class = "productWindow">
+
+	<img src={{product.photo}} width=300px >
+	<p>{{product.team.name}}</p>
+
+
+</div>
+</a>
+
+{%endfor%}
+
+{%endblock%}
