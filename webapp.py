@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, url_for, redirect
+from flask import Flask, render_template, request, flash, url_for, redirect, send_from_directory
 from model import * 
 import random
 from flask import session as login_session
@@ -6,6 +6,8 @@ from passlib.apps import custom_app_context as pwd_context
 from flask_httpauth import HTTPBasicAuth
 import sys
 import logging
+from werkzeug.utils import secure_filename
+import os
 
 
 app = Flask(__name__)
@@ -17,9 +19,13 @@ app.logger.setLevel(logging.ERROR)
 
 
 app.secret_key = '#$#UJEJOIBVJWOI'
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
-
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def verify_password(username, password):
     user = session.query(User).filter_by(username=username).first()
@@ -50,8 +56,11 @@ def login():
 			login_session['last_name'] = user.last_name	
 			login_session['username'] = username
 			login_session['id'] = user.id
-			
-
+			login_session['group'] = user.group
+			if user.group == 'student':
+				return redirect(url_for('studentPortal'))
+			if user.group == 'administrator':
+				return redirect(url_for('adminPortal'))
 			return redirect(url_for('showProducts'))
 		else:
 			flash("Incorrect username/password combination")
@@ -64,6 +73,61 @@ def logout():
 	login_session.clear()
 	flash ("Logged Out Successfully")
 	return redirect(url_for('showLandingPage'))
+
+
+@app.route("/studentPortal")
+def studentPortal():
+	if login_session['group'] != 'student':
+		flash("This page is only accessible by students")
+		return redirect(url_for('login'))
+	user = session.query(User).filter_by(id = login_session['id']).one()
+	team = session.query(Team).filter_by(id=user.team_id).one()
+	return render_template('teamPortal.html', user=user, team=team)
+
+
+@app.route("/updateSubmission", methods = ['POST'])
+def updateSubmission():
+	team_name = request.form['team_name']
+	description = request.form['description']
+	website_url = request.form['website_url']
+	video_url = request.form['video_url']
+	file = request.files['file']
+	if file.filename == '':
+		flash('No selected file')
+		return redirect(url_for('studentPortal'))
+	if file and allowed_file(file.filename):
+		user = session.query(User).filter_by(id = login_session['id']).one()
+		team = session.query(Team).filter_by(id=user.team_id).one()
+		team.name = team_name
+		team.product.description = description
+		team.product.website_url = website_url
+		team.product.video_url = video_url
+		filename = str(team.id) + "_" + secure_filename(file.filename)
+		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		team.product.set_photo(filename)
+		session.add(team)
+		session.commit()
+		flash("Team Info Updates Successfully!")
+		return redirect(url_for('studentPortal'))
+	else:
+		flash("Please upload either a .jpg, .jpeg, .png, or .gif file.")
+		return redirect(url_for('studentPortal'))
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route("/adminPortal")
+def adminPortal():
+	if login_session['group'] != 'administrator':
+		flash("This page is only accessible by administrators")
+		return redirect(url_for('login'))
+	users = session.query(User).all()
+	teams = session.query(Team).all()
+	investments = session.query(Investment).all()
+
+	return render_template('teamPortal.html', user=user, team=team)
 
 @app.route("/products")
 def showProducts():
