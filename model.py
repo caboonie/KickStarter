@@ -7,6 +7,10 @@ import psycopg2
 import datetime
 
 Base = declarative_base()
+class MailingList(Base):
+	__tablename__ = 'mailinglist'
+	id = Column(Integer, primary_key=True)
+	email = Column(String)
 
 class User(Base):
 	#Everyone in the system is a type of user, Authorization of Student Users, Administrators, and high profile investors will be specified in the 'group' field
@@ -68,7 +72,9 @@ class Product(Base):
 	investments = relationship("Investment", back_populates= "product")
 	photo = Column(String(255), unique=True)
 	video = Column(String(255), unique=True)
-	description = Column(String)
+	description_en = Column(String)
+	description_ar = Column(String)
+	description_he = Column(String)
 	website_url = Column(String(255))
 	def set_photo(self, photo):
 		self.photo = photo
@@ -87,7 +93,7 @@ class Investment(Base):
 	amount = Column(Float)
 	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
-engine = create_engine('sqlite:///KickStarter.db')
+engine = create_engine('postgres://ectykbeukkduns:27d9cb16e43310cfe701e04324463b97c1e0292087225825dedd466401d1511d@ec2-54-247-120-169.eu-west-1.compute.amazonaws.com:5432/d2qbf48ls3h7ev')
 Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine, autoflush=False)
 session = DBSession()

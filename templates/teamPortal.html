@@ -18,8 +18,16 @@
 <img src = {{url_for('uploaded_file', filename=team.product.photo)}} width = 300px >
 <input type=file name='file'><br>
 
-<p> MVP Description </p>
-<textarea name='description'>{{team.product.description}}</textarea>
+<p> English MVP Description </p>
+<textarea name='description_en'>{{team.product.description_en}}</textarea>
+
+<p> Arabic MVP Description </p>
+<textarea name='description_ar'>{{team.product.description_ar}}</textarea>
+
+
+<p> Hebrew MVP Description </p>
+<textarea name='description_he'>{{team.product.description_he}}</textarea>
+
 
 <p>MVP URL</p>
 <input type = 'text', name='website_url', value = '{{team.product.website_url}}'>

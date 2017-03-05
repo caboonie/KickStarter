@@ -8,6 +8,11 @@ import sys
 import logging
 from werkzeug.utils import secure_filename
 import os
+import datetime
+
+
+LAUNCHDATE = datetime.datetime.strptime('25/03/2017', "%d/%m/%Y").date()
+DEADLINE = datetime.datetime.strptime('31/03/2017', "%d/%m/%Y").date()
 
 
 app = Flask(__name__)
@@ -36,8 +41,23 @@ def verify_password(username, password):
 @app.route("/")
 @app.route("/main")
 def showLandingPage():
+	now = datetime.datetime.now().date()
+	if now < LAUNCHDATE:
+		return render_template("prelaunchlanding.html")
 	return render_template("landingPage.html")
+@app.route("/language/<language>")
+def changeLanguage(language):
+	login_session['language'] = language
+	return redirect(request.referrer)
 
+@app.route('/notify', methods = ['POST'])
+def notifyList():
+	email = request.form['email']
+	newEmail = MailingList(email=email)
+	session.add(newEmail)
+	session.commit()
+	flash("Thank You! You will be notified when the campaign begins")
+	return redirect(url_for('showLandingPage'))
 
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
@@ -88,30 +108,30 @@ def studentPortal():
 @app.route("/updateSubmission", methods = ['POST'])
 def updateSubmission():
 	team_name = request.form['team_name']
-	description = request.form['description']
+	description_en = request.form['description_en']
+	description_ar = request.form['description_ar']
+	description_he = request.form['description_he']
 	website_url = request.form['website_url']
 	video_url = request.form['video_url']
 	file = request.files['file']
-	if file.filename == '':
-		flash('No selected file')
-		return redirect(url_for('studentPortal'))
-	if file and allowed_file(file.filename):
-		user = session.query(User).filter_by(id = login_session['id']).one()
-		team = session.query(Team).filter_by(id=user.team_id).one()
-		team.name = team_name
-		team.product.description = description
-		team.product.website_url = website_url
-		team.product.video_url = video_url
-		filename = str(team.id) + "_" + secure_filename(file.filename)
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-		team.product.set_photo(filename)
-		session.add(team)
-		session.commit()
-		flash("Team Info Updates Successfully!")
-		return redirect(url_for('studentPortal'))
-	else:
-		flash("Please upload either a .jpg, .jpeg, .png, or .gif file.")
-		return redirect(url_for('studentPortal'))
+	user = session.query(User).filter_by(id = login_session['id']).one()
+	team = session.query(Team).filter_by(id=user.team_id).one()
+	team.name = team_name
+	team.product.description = description
+	team.product.website_url = website_url
+	team.product.video_url = video_url
+	if file.filename != '':
+		if file and allowed_file(file.filename):
+			filename = str(team.id) + "_" + secure_filename(file.filename)
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			team.product.set_photo(filename)
+		else:
+			flash("Please upload either a .jpg, .jpeg, .png, or .gif file.")
+			return redirect(url_for('studentPortal'))
+	flash("Team Info Updated Successfully!")
+	session.add(team)
+	session.commit()
+	return redirect(url_for('studentPortal'))
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

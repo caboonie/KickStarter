@@ -35,11 +35,13 @@ photos = ["http://s7d1.scene7.com/is/image/PETCO/1563564-right-1","https://fisho
 videos = ["https://www.youtube.com/embed/RZydfIkI1f4","https://www.youtube.com/embed/Rw35xX-tAu8","https://www.youtube.com/embed/jgSUpPOf0ww","https://www.youtube.com/embed/tuh6bEbXLaM","https://www.youtube.com/embed/UJ7CnUSZvvQ","https://www.youtube.com/embed/gwMvt7RU09Q","https://www.youtube.com/embed/XmD_iChKh-g","https://www.youtube.com/embed/JtLkUoKmPZc","https://www.youtube.com/embed/D_drrBUkT88","https://www.youtube.com/embed/0Hw5i7LoPeE","https://www.youtube.com/embed/g1YGnbKKjTw"]
 
 
-ipsum = "פנאי ניווט משחקים ארץ אל. דת ריקוד שדרות קודמות כדי, של כדי שתפו מושגי, צ'ט אל זקוק הבאים. אחרים אתנולוגיה מה עוד, אחד מה לציין בדפים. לתרום ייִדיש לאחרונה על עוד, על ויקי סרבול מתמטיקה עזה. מלא מדעי בישול איטליה ב. שמו אם לערך בויקיפדיה, זכר אל העזרה טכניים.  واستمر العصبة ضرب قد. وباءت الأمريكي الأوربيين هو به،, هو العالم، الثقيلة بال. مع وايرلندا الأوروبيّون كان, قد بحق أسابيع  Normcore banjo umami sriracha intelligentsia bushwick. Leggings kale chips iPhone prism copper mug ethical, yr fanny pack lomo live-edge tumblr selvage master cleanse pitchfork health goth. Vegan chambray listicle 90's gochujang. Seitan narwhal iceland, marfa poutine poke craft beer fixie twee PBR&B fashion axe chambray."
+ipsum_he = "פנאי ניווט משחקים ארץ אל. דת ריקוד שדרות קודמות כדי, של כדי שתפו מושגי, צ'ט אל זקוק הבאים. אחרים אתנולוגיה מה עוד, אחד מה לציין בדפים. לתרום ייִדיש לאחרונה על עוד, על ויקי סרבול מתמטיקה עזה. מלא מדעי בישול איטליה ב. שמו אם לערך בויקיפדיה, זכר אל העזרה טכניים."  
+ipsum_ar= "واستمر العصبة ضرب قد. وباءت الأمريكي الأوربيين هو به،, هو العالم، الثقيلة بال. مع وايرلندا الأوروبيّون كان, قد بحق أسابيع"  
+ipsum_en = "Normcore banjo umami sriracha intelligentsia bushwick. Leggings kale chips iPhone prism copper mug ethical, yr fanny pack lomo live-edge tumblr selvage master cleanse pitchfork health goth. Vegan chambray listicle 90's gochujang. Seitan narwhal iceland, marfa poutine poke craft beer fixie twee PBR&B fashion axe chambray."
 website_url = "http://meet.mit.edu"
 
 for i in range(11):
-	newProduct = Product(team_id = i+1, photo = photos[i], video = videos[i], description = ipsum, website_url = website_url)
+	newProduct = Product(team_id = i+1, photo = photos[i], video = videos[i], description_he = ipsum_he, description_ar = ipsum_ar, description_en = ipsum_en, website_url = website_url)
 	session.add(newProduct)
 	session.commit()
 

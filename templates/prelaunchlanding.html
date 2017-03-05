@@ -1,0 +1,43 @@
+<h1>MEET Pitch Deck Crowd Funding Campaign</h1>
+
+<a href="{{url_for('changeLanguage', language = 'ar')}}">عربية</a>
+
+<a href="{{url_for('changeLanguage', language = 'en')}}">English</a>
+
+<a href="{{url_for('changeLanguage', language = 'he')}}">עברית</a>
+
+{%if session['language'] == 'ar'%}
+
+<p>واستمر العصبة ضرب قد. وباءت الأمريكي الأوربيين هو به،, هو العالم، الثقيلة بال. مع وايرلندا الأوروبيّون كان, قد بحق أسابيع</p>
+
+{%elif session['language'] == 'he'%}
+<p>פנאי ניווט משחקים ארץ אל. דת ריקוד שדרות קודמות כדי, של כדי שתפו מושגי, צ'ט אל זקוק הבאים. אחרים אתנולוגיה מה עוד, אחד מה לציין בדפים. לתרום ייִדיש לאחרונה על עוד, על ויקי סרבול מתמטיקה עזה. מלא מדעי בישול איטליה ב. שמו אם לערך בויקיפדיה, זכר אל העזרה טכניים.</p>
+{%else%}
+<h2>How It Works:</h2>
+<ul>
+<li>Sign up as a new user and receive 10,000MC.  MEETCoins (MC) is a digital currency we use here at MEET.</li>
+
+<li>You will be able to see videos of our startup ideas, watch our commercials and view our preliminary websites.</li>
+
+<li>You can then invest your MEETMoney in the startup ideas that you most like.</li>
+
+<li>The startup ideas with the most investments will enter our Y3 Accelerator program and be available to the public this summer!</li>
+
+<li>The campaign begins March 25th and closes March 30th, 2017.</li>
+
+</ul>
+Notify me when the campaign begins
+
+
+
+<form action="{{url_for('notifyList')}}" method = 'post'>
+	<input type="email" name="email">
+	<input type = "submit" name="Notify me">
+</form>
+
+{%endif%}
+
+meet logo
+
+USAID logo
+
