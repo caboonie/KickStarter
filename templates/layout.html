@@ -23,10 +23,10 @@
     <link rel="manifest" href="http://meet.mit.edu/wp-content/themes/costa/img/icons/manifest.json">
     <link rel="shortcut icon" href="http://meet.mit.edu/wp-content/themes/costa/img/icons/favicon.ico">
 
-<title>Y2 Individual Projects</title>
+<title>MEET Y3 Accelerator Crowd Funding Campaign</title>
 
 
-<link rel="stylesheet" href="{{url_for('static', filename='flipclock.css')}}">
+
 
 <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 
@@ -42,55 +42,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 
-<script>
- function disableSubmit() {
-  document.getElementById("submit").disabled = true;
- }
-
-  function activateButton(element) {
-
-      if(element.checked) {
-        document.getElementById("submit").disabled = false;
-       }
-       else  {
-        document.getElementById("submit").disabled = true;
-      }
-
-  }
-</script>
-
-
-
-
-    
-    <script src="{{url_for('static', filename='flipclock.min.js')}}"></script>
-<script>
-var clock = $('.your-clock').FlipClock({
-// ... your options here
-});
-</script>
-
-    <div class="header w3-container w3-center">
-
-		<a href={{url_for('showLandingPage')}}>	<h1 class="deepshadow">
-				Y2 Yearlong Individual Projects</h1></a>
-			<h2 class="text-center">Project Submission Upload</h2>
-		</div>
-    <h3 class = "w3-container w3-center">Remaining time for submissions</h3>
-    <div class = "w3-container w3-center">
-<div class="clock w3-center"></div>
-</div>
-<script type="text/javascript">
-    var date = new Date(2017, 03, 25);
-    var now = new Date();
-    var diff = (date.getTime()/1000) - (now.getTime()/1000);
-
-    var clock = $('.clock').FlipClock(diff,{
-        clockFace: 'DailyCounter',
-        countdown: true
-    });  
-</script>
-
+<h1>MEET Y3 Accelerator Crowd Funding Campaign</h1>
 
 
 
@@ -113,7 +65,7 @@ var clock = $('.your-clock').FlipClock({
 
 
 
-<button onclick="document.getElementById('loginModal').style.display='block'" class="w3-btn">Sign In</button>
+<!--button onclick="document.getElementById('loginModal').style.display='block'" class="w3-btn">Sign In</button-->
 
   <div id="loginModal" class="w3-modal w3-container w3-center">
     <div class="w3-modal-content">
@@ -171,7 +123,7 @@ var clock = $('.your-clock').FlipClock({
 
 
 
-<footer class = "w3-container w3-center"><img src = "{{url_for('static', filename='meet.png')}}"<br>
+<footer class = "w3-container w3-center"><img src = "{{url_for('static', filename='meet.png')}}"><br><img src = "{{url_for('static', filename='usaid.png')}}" height=100px><br>
 
 <p><a href={{ url_for('showLandingPage')}}>Home</a></p>
 

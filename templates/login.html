@@ -1,15 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
 
-Enter your ID Number Here:
 <form action="{{ url_for('login') }}" method = 'post'>
-  Username:<br>
+  <p>Username:</p>
   <input type="text" name="username"><br>
-  Password:<br>
-  <input type = "password" name = "password"><br>
+  <p>Password:</p>
+  <input type = "password" name = "password"><br></br>
   <input type="submit" name="submit" id="submit">
 </form>
 
 Don't have an account? Create one <a href="#">here</a>
-<a href={{ url_for('showLandingPage')}}>Home</a>
 {%endblock%}

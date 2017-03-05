@@ -1,4 +1,6 @@
-<h1>MEET Pitch Deck Crowd Funding Campaign</h1>
+{% extends "layout.html" %}
+{% block body %}
+
 
 <a href="{{url_for('changeLanguage', language = 'ar')}}">عربية</a>
 
@@ -15,17 +17,19 @@
 {%else%}
 <h2>How It Works:</h2>
 <ul>
-<li>Sign up as a new user and receive 10,000MC.  MEETCoins (MC) is a digital currency we use here at MEET.</li>
+<li>Sign up as a new user and receive 10,000 MEETcoins.</li>
 
-<li>You will be able to see videos of our startup ideas, watch our commercials and view our preliminary websites.</li>
+<li>Use your MEETcoins to invest in the student-created startup ideas you like most.</li>
 
-<li>You can then invest your MEETMoney in the startup ideas that you most like.</li>
+<li>Look around this site to see videos of the startup ideas, watch their commercials and view their preliminary websites.</li>
 
 <li>The startup ideas with the most investments will enter our Y3 Accelerator program and be available to the public this summer!</li>
 
-<li>The campaign begins March 25th and closes March 30th, 2017.</li>
+<li>The campaign begins March 24th and closes on March 31th, 2017 - don't miss your chance to vote!</li>
 
 </ul>
+
+
 Notify me when the campaign begins
 
 
@@ -37,7 +41,5 @@ Notify me when the campaign begins
 
 {%endif%}
 
-meet logo
 
-USAID logo
-
+{%endblock%}
