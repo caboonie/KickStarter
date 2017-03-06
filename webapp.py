@@ -117,7 +117,9 @@ def updateSubmission():
 	user = session.query(User).filter_by(id = login_session['id']).one()
 	team = session.query(Team).filter_by(id=user.team_id).one()
 	team.name = team_name
-	team.product.description = description
+	team.product.description_en = description_en
+	team.product.description_ar = description_ar
+	team.product.description_he = description_he
 	team.product.website_url = website_url
 	team.product.video_url = video_url
 	if file.filename != '':

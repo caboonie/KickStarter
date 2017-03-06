@@ -15,7 +15,7 @@
 <input type = "text", name = "team_name", value = '{{team.name}}'>
 
 <p> MVP Photo </p> 
-<img src = {{url_for('uploaded_file', filename=team.product.photo)}} width = 300px >
+<img src = "{{url_for('uploaded_file', filename=team.product.photo)}}" width = 300px >
 <input type=file name='file'><br>
 
 <p> English MVP Description </p>

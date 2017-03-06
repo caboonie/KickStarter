@@ -3,16 +3,26 @@
     src: url(ProximaNova.otf);
 }
 
+@font-face{
+  font-family: meetTitleFont;
+  src: url(ProximaNovaScOsfRegular.otf);
+}
+
 body{ font-family:meetFont; color:#FFFFFF; background-color: #0C344B;text-decoration-color:none; padding:4px; margin:4px;}
-p{font-family:meetFont; color:#FFFFFF;}
+li{font-family:meetFont; font-style: bold; color:#FFFFFF; text-align: center;font-size: 40px;}
 a{font-family:meetFont; color:#FFFFFF; text-decoration: none;}
-h1{font-family:meetFont; color:#D4303C;}
-h2{font-family:meetFont; color: #27A1A1;}
+h1{font-family:meetTitleFont; color:#FFFFFF;font-size: 50px; text-align: center;}
+h2{font-family:meetFont; font-style: bold; font-size: 55px; color: #FFFFFF;text-align: center;}
 h3{font-family:meetFont; color:#FFFFFF;}
 h4{font-family:meetFont;}
+.flash_messages li{
+  color: #000000;
+  font-family:meetFont;
+  font-size: 25px;
+
+}
 #loginModal{z-index: 2;}
 #loginModal p{color:black;}
-.clock{z-index:1;left:25%;}
 ul {
   list-style-type: none;
 
@@ -42,3 +52,48 @@ iframe {
     padding: 10px 20px;
 }
 video{z-index: 110;}
+
+#languageBar{
+  text-align: center;
+  font-size: 30px;
+}
+
+footer{background-color: #D7DBDB; text-align: center;}
+
+
+#notify{
+  text-align: center;
+}
+
+
+#myCarousel-inner > .item > img {
+    margin: 0 auto;
+    width: 50%;
+}
+
+#myCarousel{
+  margin: auto;
+ 
+}
+
+.item img{
+  opacity:.6;
+  width: 100%;
+  top:0;
+}
+
+button{background-color: #D4303C;}
+
+Y3 Accelerator Crowd Funding Campaign: Proxima Nova ScOsf, size 70
+Languages: English: Proxima Nova Alt, Hebrew: Open Sans Hebrew, size 40
+How it works: Proxima Nova (Bold), size 50
+Text: Proxima Nova Alt (Bold), size 44
+Notify me...: Proxima Nova Alt (Bold), size 35
+Submit: Proxima Nova Alt (Bold), size 30
+
+
+RED - #D4303C
+NAVY - #0C344B
+BLUE - #27A1A1
+
+GREY - #D7DBDB

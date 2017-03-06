@@ -3,17 +3,33 @@
 
 <p> Your Current Balance: {{wallet.current_value}}</p>
 
-{% for product in products %}
-<a href = "{{url_for('showProduct', product_id = product.id)}}">
-<div class = "productWindow">
 
-	<img src={{product.photo}} width=300px >
-	<p>{{product.team.name}}</p>
-
-
-</div>
+{% if products==[]%}
+<p> There are currently projects in the database. </p>
+{% else %}
+<div class="container-fluid">
+  {% for product in products %}
+  {%if loop.index0 % 3 == 0 %}
+  <div class="row">
+    {% endif %}
+    <div class="col-md-4 itemDiv">
+ <a href={{url_for('showProduct', product_id = product.id)}}>
+    <p>{{product.team.name}}</p>
+    <img "{{url_for('uploaded_file', filename=product.photo|string)}}" height="250" >
 </a>
+      	</div>
 
-{%endfor%}
+
+  {% if loop.index0 % 3 == 2%}
+</div>
+{% endif %}
+  {% endfor %}
+  {%endif%}
+
+	</div>
+
+
+
 
 {%endblock%}
+
