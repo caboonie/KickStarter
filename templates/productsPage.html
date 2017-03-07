@@ -15,7 +15,7 @@
     <div class="col-md-4 itemDiv">
  <a href={{url_for('showProduct', product_id = product.id)}}>
     <p>{{product.team.name}}</p>
-    <img "{{url_for('uploaded_file', filename=product.photo|string)}}" height="250" >
+    <img src="{{url_for('uploaded_file', filename=product.photo|string)}}" height="250" >
 </a>
       	</div>
 
