@@ -1,4 +1,5 @@
-
+{% extends "layout.html" %}
+{% block body %}
 
 <h2> Welcome {{user.first_name}}</h2>
 <h3> {{team.name}}</h3>
@@ -38,9 +39,12 @@
 
 	<input type="submit" name="Save Changes" id="submit">
 </form>
-<!--- During Competition -->
+<!--- During Competition>
 <p>Investments</p>
 
 <p>Comments</p> 
 
-<p> View Dashboard</p> 
+<p> View Dashboard</p--> 
+
+	
+{%endblock%}
