@@ -8,13 +8,14 @@
   src: url(ProximaNovaScOsfRegular.otf);
 }
 
-body{ font-family:meetFont; color:#FFFFFF; background-color: #0C344B;text-decoration-color:none; padding:4px; margin:4px;}
+body{ font-family:meetFont; background-color: #0C344B;text-decoration-color:none; padding:4px; margin:4px;}
 li{font-family:meetFont; font-style: bold; color:#FFFFFF; text-align: center;font-size: 40px;}
 a{font-family:meetFont; color:#FFFFFF; text-decoration: none;}
 h1{font-family:meetTitleFont; color:#FFFFFF;font-size: 50px; text-align: center;}
 h2{font-family:meetFont; font-style: bold; font-size: 55px; color: #FFFFFF;text-align: center;}
 h3{font-family:meetFont; color:#FFFFFF;}
 h4{font-family:meetFont;}
+p{font-family: meetFont; color:#FFFFFF;}
 .flash_messages li{
   color: #000000;
   font-family:meetFont;
@@ -83,6 +84,7 @@ footer{background-color: #D7DBDB; text-align: center;}
 }
 
 button{background-color: #D4303C;}
+
 
 Y3 Accelerator Crowd Funding Campaign: Proxima Nova ScOsf, size 70
 Languages: English: Proxima Nova Alt, Hebrew: Open Sans Hebrew, size 40
