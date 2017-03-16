@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1> Sign Up as a New User</h1>
+
+<form action = "#", method = 'post'>
+
+First Name:<br>
+  <input type="text" name="first_name"><br>
+
+ Last Name:<br>
+  <input type="text" name="last_name"><br>
+ Password:<br>
+  <input type="password" name="password"><br>
+ Verify Password:<br>
+  <input type="password" name="verify_password"><br>
+ Hometown:
+  <input type="text" name="hometown"><br>
+ Email:
+  <input type="email" name="email"><br>
+  
+
+   <input type="submit" value="Sign Up">
+
+
+</form>
+{%endblock%}

@@ -24,7 +24,7 @@ student_ids = students['ID number']
 team_number = students['Team Number']
 
 for i in range(len(first_names)):
-	student = User(group = 'student', first_name = first_names[i],  last_name = last_names[i],username = first_names[i]+last_names[i][0])
+	student = User(group = 'student', first_name = first_names[i],  last_name = last_names[i], email = first_names[i]+last_names[i][0])
 	if int(team_number[i]) != 0:
 		student.team_id = int(team_number[i])
 	student.hash_password(str(student_ids[i])[0:9])
@@ -43,7 +43,7 @@ ipsum_en = "Normcore banjo umami sriracha intelligentsia bushwick. Leggings kale
 website_url = "http://meet.mit.edu"
 
 for i in range(11):
-	newProduct = Product(team_id = i+1, video = videos[i], description_he = ipsum_he, description_ar = ipsum_ar, description_en = ipsum_en, website_url = website_url)
+	newProduct = Product(team_id = i+1, video = videos[i], photo=photos[i], description_he = ipsum_he, description_ar = ipsum_ar, description_en = ipsum_en, website_url = website_url)
 	session.add(newProduct)
 	session.commit()
 

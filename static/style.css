@@ -9,23 +9,29 @@
 }
 
 body{ font-family:meetFont; background-color: #0C344B;text-decoration-color:none; padding:4px; margin:4px;}
-li{font-family:meetFont; font-style: bold; color:#FFFFFF; text-align: center;font-size: 40px;}
+li{font-family:meetFont; font-style: bold; color:#FFFFFF; text-align: left ;font-size: 25px;}
 a{font-family:meetFont; color:#FFFFFF; text-decoration: none;}
 h1{font-family:meetTitleFont; color:#FFFFFF;font-size: 50px; text-align: center;}
-h2{font-family:meetFont; font-style: bold; font-size: 55px; color: #FFFFFF;text-align: center;}
+h2{font-family:meetFont; font-style: bold; font-size: 40px; color: #FFFFFF;text-align: center;}
 h3{font-family:meetFont; color:#FFFFFF;}
 h4{font-family:meetFont;}
-p{font-family: meetFont; color:#FFFFFF;}
+p{font-family: meetFont; color:#FFFFFF; font-size: 20px;}
 .flash_messages li{
   color: #000000;
   font-family:meetFont;
   font-size: 25px;
 
 }
+
+#login_container{
+  text-align: center;
+
+}
 #loginModal{z-index: 2;}
 #loginModal p{color:black;}
 ul {
-  list-style-type: none;
+      line-height: 500%;
+
 
 }
 
@@ -55,8 +61,8 @@ iframe {
 video{z-index: 110;}
 
 #languageBar{
-  text-align: center;
-  font-size: 30px;
+  text-align:right;
+  font-size: 20px;
 }
 
 footer{background-color: #D7DBDB; text-align: center;}

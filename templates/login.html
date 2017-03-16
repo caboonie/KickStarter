@@ -1,13 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
-
+<div id = "login_container">
 <form action="{{ url_for('login') }}" method = 'post'>
-  <p>Username:</p>
-  <input type="text" name="username"><br>
+  <p>Email Address:</p>
+  <input type="text" name="email"><br><br>
   <p>Password:</p>
   <input type = "password" name = "password"><br></br>
-  <input type="submit" name="submit" id="submit">
+  <input type="submit" value="Login" id="submit">
 </form>
+ <p><a href="{{url_for('forgotPassword')}}">Forgot your password?</a></p><br>
 
-Don't have an account? Create one <a href="#">here</a>
-{%endblock%}
+<p>Don't have an account?  <a href="{{url_for('signup')}}">Create one here!</a></p><br>
+
+
+
+
+
+Log in with
+<a href="{{url_for('loginWithFacebook')}}"><img src = "{{url_for('static', filename='facebook.png')}}" height=100px></a>
+
+<a href="{{url_for('loginWithGoogle')}}"><img src = "{{url_for('static', filename='google.png')}}" height=60px></a>
+</div>
+
+ {%endblock%}
+

@@ -1,10 +1,13 @@
-from sqlalchemy import Column,Integer,String, DateTime, ForeignKey, Float, DateTime
+from sqlalchemy import Column,Integer,String, DateTime, ForeignKey, Float, DateTime, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine, func
 from passlib.apps import custom_app_context as pwd_context
 import psycopg2
 import datetime
+import json
+CONFIG = json.loads(open('secrets.json', 'r').read())
+
 
 Base = declarative_base()
 class MailingList(Base):
@@ -26,6 +29,10 @@ class User(Base):
 	team_id = Column(Integer, ForeignKey('team.id'))
 	wallet = relationship("Wallet", uselist = False, back_populates = "user")
 	comments = relationship("Comment", back_populates="user")
+	verified = Column(Boolean)
+	confirmation_code = Column(String)
+	confirmation_code_expiration = Column(DateTime)
+	hometown = Column(String(255))
 	def hash_password(self, password):
 	    self.password_hash = pwd_context.encrypt(password)
 	def verify_password(self, password):
@@ -61,6 +68,7 @@ class Comment(Base):
 	user_id = Column(Integer, ForeignKey('user.id'))
 	product = relationship("Product", back_populates = "comments")
 	product_id = Column(Integer, ForeignKey('product.id'))
+	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
 class Product(Base):
 	#Each team must create one product to submit
@@ -93,7 +101,8 @@ class Investment(Base):
 	amount = Column(Float)
 	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
-engine = create_engine('postgres://ectykbeukkduns:27d9cb16e43310cfe701e04324463b97c1e0292087225825dedd466401d1511d@ec2-54-247-120-169.eu-west-1.compute.amazonaws.com:5432/d2qbf48ls3h7ev')
+#engine = create_engine(CONFIG['DATABASE_CONNECTION'])
+engine = create_engine('sqlite:///Test.db')
 Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine, autoflush=False)
 session = DBSession()

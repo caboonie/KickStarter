@@ -15,9 +15,10 @@
 <p> Your Team Name </p>
 <input type = "text", name = "team_name", value = '{{team.name}}'>
 
-<p> MVP Photo </p> 
-<img src = "{{url_for('uploaded_file', filename=team.product.photo|string)}}" width = 300px >
-<input type=file name='file'><br>
+<p> Team Logo </p> 
+<img src = "{{team.product.photo}}" width = 300px >
+<p>Logo URL</p>
+<input type='text', name='photo_url', value = '{{team.product.photo}}'>
 
 <p> English MVP Description </p>
 <textarea name='description_en'>{{team.product.description_en}}</textarea>
@@ -39,12 +40,18 @@
 
 	<input type="submit" name="Save Changes" id="submit">
 </form>
-<!--- During Competition>
-<p>Investments</p>
+
+
+
+<h1>Total Investments {{total_investments}}</h1>
 
 <p>Comments</p> 
+{%for comment in comments %}
+<h3>{{comment.user.first_name}} {{comment.user.last_name}}</h3>
+<p>{{comment.text}}</p> 
+{%endfor%}
 
-<p> View Dashboard</p--> 
+<a href = "{{url_for('showDashboard')}}"> View Dashboard</p> 
 
 
 {%endblock%}
