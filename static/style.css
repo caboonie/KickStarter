@@ -38,8 +38,11 @@ ul {
 li{color:#FFFFFF;}
 
 iframe {
-    width: 75%;
-    height: 40%;
+  text-align: center;
+    width: 45%;
+    position: relative;
+    left:25%;
+    height: 95%;
   margin-top: 20px;
   margin-bottom: 30px;
 
@@ -67,6 +70,10 @@ video{z-index: 110;}
 
 footer{background-color: #D7DBDB; text-align: center;}
 
+
+#product_url{
+  text-align: center;
+}
 
 #notify{
   text-align: center;

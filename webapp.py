@@ -235,7 +235,7 @@ def signup():
 				newUser.group = "silver"
 			else:
 				newUser.group = "bronze"
-			session.add_all([newUser,usersWallet])
+			session.add(newUser)
 			session.commit()
 			newUser.confirmation_code = generateConfCode()
 			newUser.confirmation_code_expiration = datetime.datetime.now() + datetime.timedelta(minutes = 10)
@@ -267,12 +267,12 @@ def verify(email):
 			## Make a Wallet for verified user
 			## Make a Wallet for  newUser
 		if email in goldMembers:
-			usersWallet = Wallet(initial_value = '1000000.00', current_value = '1000000.00', user = newUser)
+			usersWallet = Wallet(initial_value = '1000000.00', current_value = '1000000.00', user = user)
 		elif email in silverMembers:
-			usersWallet = Wallet(initial_value = '100000.00', current_value = '100000.00', user = newUser)
+			usersWallet = Wallet(initial_value = '100000.00', current_value = '100000.00', user = user)
 		else:
-			usersWallet = Wallet(initial_value = '10000.00', current_value = '10000.00', user = newUser)
-		session.add_all([newUser,usersWallet])
+			usersWallet = Wallet(initial_value = '10000.00', current_value = '10000.00', user = user)
+		session.add_all([user,usersWallet])
 		session.commit()
 		flash("Account Verfied Successfully")
 		return redirect(url_for('login'))
@@ -493,5 +493,14 @@ def showDashboard():
 			total_investments += inv.amount
 		totals.append(total_investments)
 	return render_template('dashboard.html', totals = totals, products = products, bronze_investors = bronze_investors, silver_investors = silver_investors, gold_investors = gold_investors)
+
+def generateConfCode():
+	return str(randint(0,9))+str(randint(0,9))+str(randint(0,9))+str(randint(0,9))
+def send_email(subject, sender, recipients, text_body, html_body):
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+    with app.app_context():
+    	mail.send(msg)
 if __name__ == '__main__':
 	app.run(debug=True)
