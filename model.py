@@ -101,8 +101,8 @@ class Investment(Base):
 	amount = Column(Float)
 	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
-#engine = create_engine(CONFIG['DATABASE_CONNECTION'])
-engine = create_engine('sqlite:///Test.db')
+engine = create_engine(CONFIG['DATABASE_CONNECTION'])
+#engine = create_engine('sqlite:///Test.db')
 Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine, autoflush=False)
 session = DBSession()

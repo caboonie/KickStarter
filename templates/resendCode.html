@@ -3,7 +3,7 @@
 
 <p>Click the button below to resend the confirmation code to {{email}}.</p>
 
-<form action="{{url_for('resendCode')}}"method = 'post'>
+<form action="{{url_for('resendCode', email = email)}}"method = 'post'>
 	<input type='submit' value='Resend Code'>
 </form>
 

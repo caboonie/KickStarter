@@ -9,4 +9,7 @@ Werkzeug==0.11.2
 gevent
 gunicorn
 psycopg2
-
+validate_email
+flask_mail
+flask_oauthlib
+pyDNS

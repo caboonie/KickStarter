@@ -2,17 +2,17 @@
 {% block body %}
 
 <h1> Sign Up as a New User</h1>
-
+<div id="login_container">
 <form action = "#", method = 'post'>
 
-<p>First Name:</p><br>
+<p>First Name:</p>
   <input type="text" name="first_name"><br>
 
- <p>Last Name:</p><br>
+ <p>Last Name:</p>
   <input type="text" name="last_name"><br>
- <p>Password:</p><br>
+ <p>Password:</p>
   <input type="password" name="password"><br>
- <p>Verify Password:</p><br>
+ <p>Verify Password:</p>
   <input type="password" name="verify_password"><br>
  <p>Hometown:</p>
   <input type="text" name="hometown"><br>
@@ -24,4 +24,5 @@
 
 
 </form>
+</div>
 {%endblock%}

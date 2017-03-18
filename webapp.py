@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, flash, url_for, redirect, send_from_directory, jsonify
 from model import * 
 import random
@@ -13,7 +14,7 @@ from random import randint
 from validate_email import validate_email
 from flask_mail import Mail
 from flask_mail import Message
-from flask_oauthlib.client import OAuth
+from flask_oauthlib.client import OAuth, OAuthException 
 
 import json 
 import string
@@ -33,7 +34,7 @@ app.config['GOOGLE_ID'] = CONFIG['GOOGLE_ID']
 app.config['GOOGLE_SECRET'] = CONFIG['GOOGLE_SECRET']
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
-app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+app.secret_key = CONFIG['SECRET_KEY']
 oauth = OAuth(app)
 
 
@@ -97,6 +98,8 @@ def verify_password(email, password):
 
 @app.route('/loginWithGoogle')
 def loginWithGoogle():
+	#callback = 'https://meetcampaign.herokuapp.com/loginWithGoogle/authorized'
+	#return google.authorize(callback=callback)
     return google.authorize(callback=url_for('authorized', _external=True))
 @app.route('/loginWithGoogle/authorized')
 def authorized():
@@ -157,9 +160,13 @@ def showLandingPage():
 
 @app.route('/loginWithFacebook')
 def loginWithFacebook():
-    return facebook.authorize(callback=url_for('facebook_authorized',
-        next=request.args.get('next') or request.referrer or None,
-        _external=True))
+	#callback = url_for('facebook_authorized', next = request.args.get('next') or request.referrer or None, _external=True)
+	callback = 'https://meetcampaign.herokuapp.com/loginWithFacebook/authorized'
+	return facebook.authorize(callback=callback)
+
+# return facebook.authorize(callback=url_for('facebook_authorized',
+#    next=request.args.get('next') or request.referrer or None,
+#   _external=True))
 
 
 @app.route('/loginWithFacebook/authorized')
@@ -170,6 +177,8 @@ def facebook_authorized(resp):
 		request.args['error_reason'],
 		request.args['error_description']
 		)
+	if isinstance(resp, OAuthException):
+		return 'Access denied: %s' % resp.message
 	login_session['oauth_token'] = (resp['access_token'], '')
 	me = facebook.get('/me?fields=name,email')
 	name = me.data['name']
@@ -264,8 +273,11 @@ def verify(email):
 		code = request.form['code']
 		if user.confirmation_code == code:
 			user.verified = True
-			## Make a Wallet for verified user
-			## Make a Wallet for  newUser
+		else:
+			flash("Verification code incorrect. Please try again")
+			return redirect(url_for('verify', email = email))
+		## Make a Wallet for verified user
+		## Make a Wallet for  newUser
 		if email in goldMembers:
 			usersWallet = Wallet(initial_value = '1000000.00', current_value = '1000000.00', user = user)
 		elif email in silverMembers:
@@ -277,7 +289,7 @@ def verify(email):
 		flash("Account Verfied Successfully")
 		return redirect(url_for('login'))
 
-@app.route("/resendCode/<email>")
+@app.route("/resendCode/<email>", methods = ['GET', 'POST'])
 def resendCode(email):
 	user = session.query(User).filter_by(email=email).one()
 	if request.method == 'GET':
@@ -289,6 +301,8 @@ def resendCode(email):
 		session.commit()
 		send_email("Resetting your MEETCampaign Account Code",ADMINS[0],[user.email],render_template("confirmationemail.txt", user=user),
                render_template("confirmationemail.html", user=user))
+		flash("A new verification code has been sent to your email address")
+		return redirect(url_for('verify', email = email))
 
 @app.route("/forgotPassword", methods = ['GET', 'POST'])
 def forgotPassword():
@@ -330,10 +344,10 @@ def resetPassword(email):
 				flash("Account Verfied Successfully")
 				return redirect(url_for('login'))
 			else:
-				flash("passwords do not match")
+				flash("Passwords do not match")
 				return redirect(url_for('resetPassword', email = email))
 		else:
-				flash("incorrect verifcation code")
+				flash("Incorrect verifcation code")
 				return redirect(url_for('resetPassword', email = email))
 
 @app.route("/language/<language>")
@@ -349,6 +363,8 @@ def notifyList():
 	session.commit()
 	if login_session['language'] == 'ar':
 		flash("شكرا جزيلا ! سوف يتم إعلامك عندما تبدأ الحملة")
+	elif login_session['language'] == 'he':
+		flash("תודה רבה! ניצור אתכם קשר כשהקמפיין יתחיל.")
 	else:
 		flash("Thank You! You will be notified when the campaign begins")
 	return redirect(url_for('showLandingPage'))
@@ -365,6 +381,9 @@ def login():
 			return redirect(url_for('login'))
 		if verify_password(email, password):
 			user = session.query(User).filter_by(email=email).one()
+			if user.verified == False:
+				flash("You must verify your account before continuing")
+				return redirect(url_for('verify', email = email))
 			flash("Login Successful. Welcome, %s!" % user.first_name)
 			login_session['first_name'] = user.first_name
 			login_session['last_name'] = user.last_name	
@@ -392,7 +411,7 @@ def logout():
 @app.route("/studentPortal")
 def studentPortal():
 	if login_session['group'] != 'student':
-		flash("This page is only accessible by students")
+		flash("This page is only accessible to students")
 		return redirect(url_for('login'))
 	user = session.query(User).filter_by(id = login_session['id']).one()
 	team = session.query(Team).filter_by(id=user.team_id).one()

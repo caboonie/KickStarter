@@ -27,6 +27,10 @@ p{font-family: meetFont; color:#FFFFFF; font-size: 20px;}
   text-align: center;
 
 }
+
+#signupcontainer{
+  text-align: center;
+}
 #loginModal{z-index: 2;}
 #loginModal p{color:black;}
 ul {
@@ -98,6 +102,9 @@ footer{background-color: #D7DBDB; text-align: center;}
 
 button{background-color: #D4303C;}
 
+input{
+  color:#000000;
+}
 
 Y3 Accelerator Crowd Funding Campaign: Proxima Nova ScOsf, size 70
 Languages: English: Proxima Nova Alt, Hebrew: Open Sans Hebrew, size 40

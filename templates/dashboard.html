@@ -2,8 +2,8 @@
 		 	<meta http-equiv="refresh" content="60">
 		 </head>
 
-		  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="http://d3js.org/d3.v3.min.js"></script>
+		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="https://d3js.org/d3.v3.min.js"></script>
 		
 		<style>
 		body{
@@ -46,7 +46,6 @@ $(document).ready(function() {
 					init: function(options){
 						methods.el = this;
 						
-						console.log("options", options);
 						
 						var clone = options["data"].slice(0);
 						methods.setup(clone, options["width"], options["height"]);			
@@ -86,11 +85,9 @@ $(document).ready(function() {
 						bar
 							.attr("fill", function(d){
 								var topVals = {{totals|sort(reverse=True)}};
-								console.log("I'm in here!");
-								console.log(d.frequency)
+								
 								//console.log(topVals);
 								if (d.frequency == topVals[0]){
-									console.log("Making Red");
 									return "red";
 								}
 								else if (d.frequency == topVals[1]){
