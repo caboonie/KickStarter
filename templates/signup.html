@@ -1,9 +1,60 @@
 {% extends "layout.html" %}
 {% block body %}
+{% if session['language'] == 'he'}
+<h1> הירשם כמשתמש חדש</h1>
+<div id="login_container">
+<form action = "{{url_for('signup')}}", method = 'post'>
 
+<p>:שם</p>
+  <input type="text" name="first_name"><br>
+
+ <p>:שם משפחה</p>
+  <input type="text" name="last_name"><br>
+ <p>:סיסמא</p>
+  <input type="password" name="password"><br>
+ <p>:וודא סיסמא</p>
+  <input type="password" name="verify_password"><br>
+ <p>:עיר מגורים</p>
+  <input type="text" name="hometown"><br>
+ <p>:כתובת אימייל</p>
+  <input type="email" name="email"><br>
+  
+
+   <input type="submit" value="הירשם">
+
+
+</form>
+</div>
+{%elif session['language']=='ar'}
+<h1> سجل الدخول كمستخدم جديد</h1>
+<div id="login_container">
+<form action = "{{url_for('signup')}}", method = 'post'>
+
+<p>:الأسم</p>
+  <input type="text" name="first_name"><br>
+
+ <p>:أسم العائلة</p>
+  <input type="text" name="last_name"><br>
+ <p>:كلمة السر</p>
+  <input type="password" name="password"><br>
+ <p>:أكد كلمة السر</p>
+  <input type="password" name="verify_password"><br>
+ <p>:البلدة</p>
+  <input type="text" name="hometown"><br>
+ <p>:البريد الإلكتروني</p>
+  <input type="email" name="email"><br>
+  
+
+   <input type="submit" value="سجل الدخول">
+
+
+</form>
+</div>
+
+{% else %}
 <h1> Sign Up as a New User</h1>
 <div id="login_container">
-<form action = "#", method = 'post'>
+<form action = "{{url_for('signup')}}", method = 'post'>
 
 <p>First Name:</p>
   <input type="text" name="first_name"><br>
@@ -25,4 +76,7 @@
 
 </form>
 </div>
+
+{% endif %}
+
 {%endblock%}

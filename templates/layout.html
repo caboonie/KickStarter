@@ -83,49 +83,41 @@
 		
 	
       {% if 'id' in session %}
+      {%if session['language'] == 'he'%}
+            <p> הנך כרגע רשום כ{{session['first_name']}}.<br>
+        
+         <a href = "{{url_for('logout')}}">התנתק </a></p>
+       
+      {%elif session['language']=='ar'%}
+            <p> تم تسجيل الدخول بإسم {{session['first_name']}}.<br>
+        
+         <a href = "{{url_for('logout')}}">تسجيل الخروج</a></p>
+     
+      {%else%}
       <p> You are currently signed in as {{session['first_name']}}.<br>
-{% if session['group'] == 'investor'%}
-<a href='#'>Your Account</a>
-{%endif%}
       	
       	 <a href = "{{url_for('logout')}}">Log Out</a></p>
-      {% else %}
       
 
+{%endif%}
+{%endif%}
 
+<!--Account balance -->
+{% if wallet is defined%}
+<div id='account_balance'>
+{% if session['language'] == 'he'%}
+<p> יתרת חשבונך כרגע הוא: {{wallet.current_value}}</p>
 
+{%elif session['language'] == 'ar'%}
+<p> رصيدك الحالي : {{wallet.current_value}}</p>
 
-<!--button onclick="document.getElementById('loginModal').style.display='block'" class="w3-btn">Sign In</button-->
+{%else%}
+<p> Your Current Balance: {{wallet.current_value}}</p>
 
-  <div id="loginModal" class="w3-modal w3-container w3-center">
-    <div class="w3-modal-content">
-      <div class="w3-container">
-        <span onclick="document.getElementById('loginModal').style.display='none'" class="w3-closebtn">&times;</span>
-        <h3>Log In Here</h3>
-
-
- <form action="{{ url_for('login') }}" method = 'post'>
-        Username:<br>
-        <input type="text" name="username"><br>
-        Password:<br>
-        <input type="password" name="password"><br>
-         <input type="submit" value="Login">
-
-
-      </form>
-<p > Don't have an account? Create one <b><a style="color:black;" href='#'>Here</b>.</a>
-
-
-      <!--End Sign-In Bar --> 
-
-
-      </div>
-    </div>
-  </div>
-
-       
-{% endif %}
-
+{%endif%}
+</div>
+{%endif%}
+<!-- End Account balance --> 
 
 
 <!--Flash Messaging --> 

@@ -1,28 +1,82 @@
 {% extends "layout.html" %}
 {% block body %}
-<p> Your Current Balance: {{wallet.current_value}}</p>
 
-
+{% if session['language'] == 'he' %}
 <h1>{{product.team.name}}</h1>
-
-
-
-
 <iframe width="420" height="420" src="{{product.video}}">
 </iframe>
-{% if session['language'] == 'he' %}
+
 <p>
 {{product.description_he}}
 </p>
+
+
+{%if product.website_url != None %}
+<div id="product_url">
+<p><a href={{product.website_url}} target="_blank">{{product.website_url}}</a></p><br>
+<div>
+{%endif%}
+
+{% if session['group'] == 'silver' or session['group'] == 'gold'%}
+
+<form action = "{{url_for('addComment', team_id = product.team_id)}}" method = 'post'>
+	<textarea name='commentary'>אנא השאר תגובה או ביקורת לקבוצה כאן.</textarea><br>
+<input type='submit', value = 'שלח'>
+</form>
+
+{%endif%}
+
+
+<form action="{{ url_for('makeAnInvestment', product_id = product.id) }}" method = 'post'><br>
+  <p>האם ברצונך להשקיע בסטרט-אפ זה? הגדר השקעתך למטה:</p><br>
+  <input type="number" name="amount"><br>
+  
+   <input type="submit" value="שלח">
+</form>
+
+
 {% elif session['language'] == 'ar' %}
+<h1>{{product.team.name}}</h1>
+<iframe width="420" height="420" src="{{product.video}}">
+</iframe>
+
 <p>
 {{product.description_ar}}
 </p>
+
+
+
+{%if product.website_url != None %}
+<div id="product_url">
+<p><a href={{product.website_url}} target="_blank">{{product.website_url}}</a></p><br>
+<div>
+{%endif%}
+
+{% if session['group'] == 'silver' or session['group'] == 'gold'%}
+
+<form action = "{{url_for('addComment', team_id = product.team_id)}}" method = 'post'>
+	<textarea name='commentary'>من فضلك قم بترك ملاحظاتك و تعليقاتك لهذا الفريق هنا</textarea><br>
+<input type='submit', value = 'Submit Comment'>
+</form>
+
+{%endif%}
+
+
+<form action="{{ url_for('makeAnInvestment', product_id = product.id) }}" method = 'post'><br>
+  <p>هل تريد الإستثمار في هذا المشروع ؟ حدد مقدار الإستثمار الذي تريده هنا </p><br>
+  <input type="number" name="amount"><br>
+  
+   <input type="submit" value="أرسل">
+</form>
+
 {% else %}
+<h1>{{product.team.name}}</h1>
+<iframe width="420" height="420" src="{{product.video}}">
+</iframe>
+
 <p>
 {{product.description_en}}
 </p>
-{%endif%}
 
 
 {%if product.website_url != None %}
@@ -47,6 +101,6 @@
   
    <input type="submit" value="Invest in this Startup">
 </form>
-
+{%endif%}
 
 {%endblock%}

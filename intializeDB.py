@@ -16,7 +16,7 @@ for i in range(12):
 ## Add all students to the database:
 
 
-students = pd.read_csv('../students.csv')
+students = pd.read_csv('students.csv')
 
 first_names = students['Student first name']
 last_names = students['Student last name']

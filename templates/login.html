@@ -1,5 +1,55 @@
 {% extends "layout.html" %}
 {% block body %}
+
+{% if session['language'] == 'he' %}
+<div id = "login_container">
+<form action="{{ url_for('login') }}" method = 'post'>
+  <p>:כתובת אימייל</p>
+  <input type="text" name="email"><br><br>
+  <p>:סיסמא</p>
+  <input type = "password" name = "password"><br></br>
+  <input type="submit" value="Login" id="submit">
+</form>
+ <p><a href="{{url_for('forgotPassword')}}">?שכחת את הסיסמא</a></p><br>
+
+<p>?אין לך חשבון  <a href="{{url_for('signup')}}">!צור אחד כאן</a></p><br>
+
+
+
+
+
+
+<a href="{{url_for('loginWithFacebook')}}"><img src = "{{url_for('static', filename='facebook.png')}}" height=100px></a>
+
+<a href="{{url_for('loginWithGoogle')}}"><img src = "{{url_for('static', filename='google.png')}}" height=60px></a>
+</div>
+
+{%elif session['language'] == 'ar' %}
+
+<div id = "login_container">
+<form action="{{ url_for('login') }}" method = 'post'>
+  <p>:البريد الإلكتروني</p>
+  <input type="text" name="email"><br><br>
+  <p>:كلمة السر</p>
+  <input type = "password" name = "password"><br></br>
+  <input type="submit" value="Login" id="submit">
+</form>
+ <p><a href="{{url_for('forgotPassword')}}">نسيت كلمة المرور ؟</a></p><br>
+
+<p>ليس لديك حساب ؟    <a href="{{url_for('signup')}}">إعمل حساب هنا</a></p><br>
+
+
+
+
+
+
+<a href="{{url_for('loginWithFacebook')}}"><img src = "{{url_for('static', filename='facebook.png')}}" height=100px></a>
+
+<a href="{{url_for('loginWithGoogle')}}"><img src = "{{url_for('static', filename='google.png')}}" height=60px></a>
+</div>
+
+{%else%}
+
 <div id = "login_container">
 <form action="{{ url_for('login') }}" method = 'post'>
   <p>Email Address:</p>
@@ -16,11 +66,14 @@
 
 
 
-Log in with
+
 <a href="{{url_for('loginWithFacebook')}}"><img src = "{{url_for('static', filename='facebook.png')}}" height=100px></a>
 
 <a href="{{url_for('loginWithGoogle')}}"><img src = "{{url_for('static', filename='google.png')}}" height=60px></a>
 </div>
+
+
+{%endif%}
 
  {%endblock%}
 

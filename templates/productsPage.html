@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<p> Your Current Balance: {{wallet.current_value}}</p>
-
-
 {% if products==[]%}
 <p> There are currently no projects in the database. </p>
 {% else %}
@@ -17,7 +14,7 @@
     <p>{{product.team.name}}</p>
     <img src="{{product.photo}}" height="250" >
 </a>
-      	</div>
+        </div>
 
 
   {% if loop.index0 % 3 == 2%}
@@ -26,10 +23,7 @@
   {% endfor %}
   {%endif%}
 
-	</div>
-
-
-
+  </div>
 
 {%endblock%}
 

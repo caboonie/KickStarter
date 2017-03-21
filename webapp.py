@@ -18,6 +18,11 @@ from flask_oauthlib.client import OAuth, OAuthException
 
 import json 
 import string
+
+#Comment this line out for python3 
+reload(sys) 
+sys.setdefaultencoding("utf-8")
+
 CONFIG = json.loads(open('secrets.json', 'r').read())
 
 LAUNCHDATE = datetime.datetime.strptime('25/03/2017', "%d/%m/%Y").date()
@@ -86,6 +91,7 @@ facebook = oauth.remote_app('facebook',
 )
 
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -142,7 +148,13 @@ def authorized():
 	login_session['id'] = newUser.id
 	login_session['last_name'] = newUser.last_name
 	login_session['group'] = newUser.group
-	flash("Login Successful. Welcome, %s!" % newUser.first_name)
+	if 'language' in login_session:
+		if login_session['language'] == 'ar':
+			flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا،  %s!" % newUser.first_name)
+		elif login_session['language']== 'he':
+			flash("התחברות מוצלחת. ברוכים הבאים, %s!" % newUser.first_name)
+	else:
+		flash("Login Successful. Welcome, %s!" % newUser.first_name)
 	return redirect(url_for('showProducts'))
 
 
@@ -153,6 +165,8 @@ def get_google_oauth_token():
 @app.route("/")
 @app.route("/main")
 def showLandingPage():
+	if 'language' not in login_session:
+		login_session['language'] = 'en'
 	now = datetime.datetime.now().date()
 	if now < LAUNCHDATE:
 		return render_template("prelaunchlanding.html")
@@ -160,14 +174,10 @@ def showLandingPage():
 
 @app.route('/loginWithFacebook')
 def loginWithFacebook():
+	#Toggle the comments between the two lines below if you are running the app locally.
 	#callback = url_for('facebook_authorized', next = request.args.get('next') or request.referrer or None, _external=True)
 	callback = 'https://meetcampaign.herokuapp.com/loginWithFacebook/authorized'
 	return facebook.authorize(callback=callback)
-
-# return facebook.authorize(callback=url_for('facebook_authorized',
-#    next=request.args.get('next') or request.referrer or None,
-#   _external=True))
-
 
 @app.route('/loginWithFacebook/authorized')
 @facebook.authorized_handler
@@ -211,7 +221,13 @@ def facebook_authorized(resp):
 	login_session['id'] = newUser.id
 	login_session['last_name'] = newUser.last_name
 	login_session['group'] = newUser.group
-	flash("Login Successful. Welcome, %s!" % newUser.first_name)
+	if 'language' in login_session:
+		if login_session['language'] == 'ar':
+			flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا،  %s!" % newUser.first_name)
+		elif login_session['language']== 'he':
+			flash("התחברות מוצלחת. ברוכים הבאים, %s!" % newUser.first_name)
+	else:
+		flash("Login Successful. Welcome, %s!" % newUser.first_name)
 	return redirect(url_for('showProducts'))
     
 
@@ -231,10 +247,20 @@ def signup():
 		password = request.form['password']
 		verify_password = request.form['verify_password']
 		if password != verify_password:
-			flash("Passwords do not match")
+			if login_session['language'] == 'he':
+				flash("הסיסמאות אינן תואמות")
+			elif login_session['language'] == 'ar':
+				flash("كلمة السر غير متطابقة")
+			else:
+				flash("Passwords do not match")
 			return redirect(url_for('signup'))
 		if session.query(User).filter_by(email=email).all() != []:
-			flash("A User already exists with this email address")
+			if login_session['language'] == 'he':
+				flash("משתמש עם כתובת האימייל הנוכחית כבר קיים.")
+			elif login_session['language'] == 'ar':
+				flash("هناك مستخدم آخر بنفس هذا البريد الإلكتروني")
+			else:
+				flash("A User already exists with this email address")
 			return redirect(url_for('signup'))
 		if validate_email(email, verify=True)!=False:
 			newUser = User(first_name=first_name, last_name=last_name, hometown = hometown,email=email, verified=False)
@@ -251,12 +277,26 @@ def signup():
 			newUser.hash_password(password)
 			session.add(newUser)
 			session.commit()
-			send_email("Verify your MEETCampaign Account",ADMINS[0],[newUser.email],render_template("confirmationemail.txt", user=newUser),
+			if login_session['language'] == 'ar':
+				send_email("أكد على بريدك الإلكتروني المستخدم للحملة",ADMINS[0],[newUser.email],render_template("confirmationemail_ar.txt", user=newUser),
+	           render_template("confirmationemail_ar.html", user=newUser))
+				flash("Please check your email to verify your confirmation code")
+			elif login_session['language'] == 'he':
+				send_email("וודא את חשבון קמפיין המיט שלך",ADMINS[0],[newUser.email],render_template("confirmationemail_he.txt", user=newUser),
+	           render_template("confirmationemail_he.html", user=newUser))
+				flash("Please check your email to verify your confirmation code")
+			else:
+				send_email("Verify your MEETCampaign Account",ADMINS[0],[newUser.email],render_template("confirmationemail.txt", user=newUser),
 	           render_template("confirmationemail.html", user=newUser))
-			flash("Please check your email to verify your confirmation code")
+				flash("Please check your email to verify your confirmation code")
 			return redirect(url_for('verify', email = email))
 		else:
-			flash("This email is invalid. Please try again")
+			if login_session['language'] == 'he':
+				flash("כתובת האימייל שגויה. אנא נסו שנית.")
+			elif login_session['language'] == 'ar':
+				flash("البريد الإلكتروني خطأ . من فضلك حاول مرة أخرى")
+			else:
+				flash("This email is invalid. Please try again")
 			return redirect(url_for('signup'))
 
 		
@@ -265,7 +305,12 @@ def signup():
 def verify(email):
 	user = session.query(User).filter_by(email=email).one()
 	if user.confirmation_code_expiration < datetime.datetime.now():
-		flash("This confirmation code has expired. Please request a new code.")
+		if login_session['language'] == 'he':
+			flash("קוד האישור הזה פג תוקף. אנא בקש קוד חדש.")
+		elif login_session['language'] == 'ar':
+			flash("لقد إنتهت مدة إستعمال كود التفعيل هذا . من فضلك أطلب كود جديد")
+		else:
+			flash("This confirmation code has expired. Please request a new code.")
 		return redirect(url_for('resendCode', email = user.email))
 	if request.method == 'GET':
 		return render_template('verifyAccount.html', user=user)
@@ -274,7 +319,12 @@ def verify(email):
 		if user.confirmation_code == code:
 			user.verified = True
 		else:
-			flash("Verification code incorrect. Please try again")
+			if login_session['language'] == 'he':
+				flash("קוד ווידוא שגוי")
+			elif login_session['language'] == 'ar':
+				flash("كود التفعيل المدخل خطأ")
+			else:
+				flash("Verification code incorrect. Please try again")
 			return redirect(url_for('verify', email = email))
 		## Make a Wallet for verified user
 		## Make a Wallet for  newUser
@@ -286,7 +336,12 @@ def verify(email):
 			usersWallet = Wallet(initial_value = '10000.00', current_value = '10000.00', user = user)
 		session.add_all([user,usersWallet])
 		session.commit()
-		flash("Account Verfied Successfully")
+		if login_session['language']=='he':
+			flash("ווידוא חשבונך נעשה בהצלחה")
+		elif login_session['language'] == 'ar':
+			flash("تم تفعيل الحساب بنجاح")
+		else:
+			flash("Account Verfied Successfully")
 		return redirect(url_for('login'))
 
 @app.route("/resendCode/<email>", methods = ['GET', 'POST'])
@@ -299,9 +354,19 @@ def resendCode(email):
 		user.confirmation_code_expiration = datetime.datetime.now() + datetime.timedelta(minutes = 10)
 		session.add(user)
 		session.commit()
-		send_email("Resetting your MEETCampaign Account Code",ADMINS[0],[user.email],render_template("confirmationemail.txt", user=user),
+		if login_session['language'] == 'he':
+			send_email("איפוס קוד חשבון קמפיין המיט שלך",ADMINS[0],[user.email],render_template("confirmationemail_he.txt", user=user),
+               render_template("confirmationemail_he.html", user=user))
+			flash("קוד אישור חדש נשלח אל כתובת האימייל שלך.")
+		elif login_session['language'] == 'ar':
+			send_email("إعادة ضبط الكود الخاص بحساب الحملة",ADMINS[0],[user.email],render_template("confirmationemail_ar.txt", user=user),
+               render_template("confirmationemail_ar.html", user=user))
+			flash("تم إرسال كود تفعيل جديد إلى بريدك الإلكتروني")
+		else:
+			send_email("Resetting your MEETCampaign Account Code",ADMINS[0],[user.email],render_template("confirmationemail.txt", user=user),
                render_template("confirmationemail.html", user=user))
-		flash("A new verification code has been sent to your email address")
+			flash("A new verification code has been sent to your email address")
+
 		return redirect(url_for('verify', email = email))
 
 @app.route("/forgotPassword", methods = ['GET', 'POST'])
@@ -312,16 +377,30 @@ def forgotPassword():
 		email = request.form['email']
 		user = session.query(User).filter_by(email=email).one_or_none()
 		if user == None:
-			flash("No user exists with this email address.  Please create a new account")
+			if login_session['language'] == 'he':
+				flash("לא קיים משתמש עם כתובת האימייל הזו. צור חשבון חדש.")
+			elif login_session['language'] == 'ar':
+				flash("لا يوجد مستخدم بهذا البريد الإلكتروني , من فضلك إعمل حساب جديد ")
+			else:
+				flash("No user exists with this email address.  Please create a new account")
 			return redirect(url_for('signup'))
 		else:
 			user.confirmation_code = generateConfCode()
 			user.confirmation_code_expiration = datetime.datetime.now() + datetime.timedelta(minutes = 10)
 			session.add(user)
 			session.commit()
-			send_email("Resetting your MEETCampaign Password",ADMINS[0],[user.email],render_template("resetpassword.txt", user=user),
+			if login_session['language'] == 'he':
+				send_email("איפוס סיסמת קמפיין המיט שלך",ADMINS[0],[user.email],render_template("resetpassword_he.txt", user=user),
+               render_template("resetpassword_he.html", user=user))
+				flash("קוד אישור חדש נשלח אל כתובת האימייל שלך.")
+			elif login_session['language'] == 'ar':
+				send_email("إعادة ضبط كلمة السر الخاصة بحساب الحملة ",ADMINS[0],[user.email],render_template("resetpassword_ar.txt", user=user),
+               render_template("resetpassword_ar.html", user=user))
+				flash("تم إرسال كود تفعيل جديد إلى بريدك الإلكتروني")
+			else:
+				send_email("Resetting your MEETCampaign Password",ADMINS[0],[user.email],render_template("resetpassword.txt", user=user),
                render_template("resetpassword.html", user=user))
-			flash("A new confirmation code has been sent to your email")
+				flash("A new confirmation code has been sent to your email")
 			return redirect(url_for('resetPassword', email=email))
 
 @app.route("/resetPassword/<email>", methods = ['GET','POST'])
@@ -334,21 +413,41 @@ def resetPassword(email):
 		password = request.form['password']
 		verify_password = request.form['verify_password']
 		if user.confirmation_code_expiration < datetime.datetime.now():
-			flash("This confirmation code has expired. Please request a new code.")
+			if login_session['language'] == 'he':
+				flash("קוד האישור הזה פג תוקף. אנא בקש קוד חדש.")
+			elif login_session['language'] == 'ar':
+				flash("لقد إنتهت مدة إستعمال كود التفعيل هذا . من فضلك أطلب كود جديد")
+			else:
+				flash("This confirmation code has expired. Please request a new code.")
 			return redirect(url_for('passwordReset', email = user.email))
 		if user.confirmation_code == code:
 			if password == verify_password:
 				user.hash_password(verify_password)
 				session.add(user)
 				session.commit()
-				flash("Account Verfied Successfully")
+				if login_session['language'] == 'he':
+					flash("ווידוא חשבונך נעשה בהצלחה")
+				elif login_session['language'] == 'ar':
+					flash("تم تفعيل الحساب بنجاح")
+				else:
+					flash("Account Verfied Successfully")
 				return redirect(url_for('login'))
 			else:
-				flash("Passwords do not match")
+				if login_session['language'] == 'he':
+					flash("הסיסמאות אינן תואמות")
+				elif login_session['language'] == 'ar':
+					flash("كلمة السر غير متطابقة")
+				else:
+					flash("Passwords do not match")
 				return redirect(url_for('resetPassword', email = email))
 		else:
+			if login_session['language'] == 'he':
+				flash("קוד ווידוא שגוי")
+			elif login_session['language'] == 'ar':
+				flash("كود التفعيل المدخل خطأ")
+			else:
 				flash("Incorrect verifcation code")
-				return redirect(url_for('resetPassword', email = email))
+			return redirect(url_for('resetPassword', email = email))
 
 @app.route("/language/<language>")
 def changeLanguage(language):
@@ -377,14 +476,29 @@ def login():
 		email = request.form['email']
 		password = request.form['password']
 		if email is None or password is None:
-			flash("Missing Arguments")
+			if login_session['language'] == 'he':
+				flash("צירוף שם משתמש או סיסמא לא נכון")
+			elif login_session['language'] == 'ar':
+				flash("إسم المستخدم خطأ \ كلمة السر خطأ")
+			else:
+				flash("Missing Values")
 			return redirect(url_for('login'))
 		if verify_password(email, password):
 			user = session.query(User).filter_by(email=email).one()
 			if user.verified == False:
-				flash("You must verify your account before continuing")
+				if login_session['language'] == 'he':
+					flash("עליך לאשר את חשבונך לפני שאתה ממשיך")
+				elif login_session['language'] == 'ar':
+					flash("يجب عليك أن تقوم بتفعيل حسابك قبل الإستمرار ")
+				else:
+					flash("You must verify your account before continuing")
 				return redirect(url_for('verify', email = email))
-			flash("Login Successful. Welcome, %s!" % user.first_name)
+			if login_session['language'] == 'he':
+				flash("התחברות מוצלחת. ברוכים הבאים,%s!" % user.first_name)
+			elif login_session['language'] == 'ar':
+				flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا %s!" % user.first_name)
+			else:
+				flash("Login Successful. Welcome, %s!" % user.first_name)
 			login_session['first_name'] = user.first_name
 			login_session['last_name'] = user.last_name	
 			login_session['email'] = email
@@ -396,22 +510,42 @@ def login():
 				return redirect(url_for('adminPortal'))
 			return redirect(url_for('showProducts'))
 		else:
-			flash("Incorrect email/password combination")
+			if login_session['language'] == 'he':
+				flash("צירוף שם משתמש או סיסמא לא נכון")
+			elif login_session['language'] == 'ar':
+				flash("إسم المستخدم خطأ \ كلمة السر خطأ")
+			else:
+				flash("Incorrect email/password combination")
 			return redirect(url_for('login'))
 @app.route('/logout')
 def logout():
 	if 'id' not in login_session:
-		flash("You must be logged in in order to log out")
+		if login_session['language'] == 'he':
+			flash("עליך להיות מחובר בכדי להתנתק")
+		elif login_session['language'] == 'ar':
+			flash("يجب أن تسجل الدخول من أجل تسجيل الخروج")
+		else:
+			flash("You must be logged in in order to log out")
 		return redirect(request.referrer)
+	if login_session['language'] == 'he':
+		flash("התנתקות מוצלחת")
+	elif login_session['language'] == 'ar':
+		flash("تم تسجيل الخروج بنجاح")
+	else:
+		flash ("Logged Out Successfully")
 	login_session.clear()
-	flash ("Logged Out Successfully")
 	return redirect(url_for('showLandingPage'))
 
 
 @app.route("/studentPortal")
 def studentPortal():
 	if login_session['group'] != 'student':
-		flash("This page is only accessible to students")
+		if login_session['language'] == 'he':
+			flash("הדף הזה נגיש רק לתלמידים")
+		elif login_session['language'] == 'ar':
+			flash("هذه الصفحة الدخول إليها من قبل الطلاب فقط")
+		else:
+			flash("This page is only accessible to students")
 		return redirect(url_for('login'))
 	user = session.query(User).filter_by(id = login_session['id']).one()
 	team = session.query(Team).filter_by(id=user.team_id).one()
@@ -456,7 +590,12 @@ def addComment(team_id):
 	comment = Comment(text = request.form['commentary'], product=product)
 	session.add(comment)
 	session.commit()
-	flash("Thank you for your feedback!")
+	if login_session['language'] == 'he':
+		flash("תודה על משובך!")
+	elif login_session['language'] == 'ar':
+		flash("شكرا لك على ملاحظاتك!")
+	else:
+		flash("Thank you for your feedback!")
 	return redirect(request.referrer)
 
 @app.route("/adminPortal")
@@ -472,7 +611,12 @@ def adminPortal():
 @app.route("/products")
 def showProducts():
 	if 'id' not in login_session:
-		flash("You must be logged in to view this page.")
+		if login_session['language'] == 'he':
+			flash("עליך להיות מחובר על מנת לצפות בדף זה.")
+		elif login_session['language'] == 'ar':
+			flash("يجب عليك تسجيل الدخول من أجل عرض هذه الصفحة")
+		else:
+			flash("You must be logged in to view this page.")
 		return redirect(url_for('login'))
 	products = session.query(Product).all()
 	wallet = session.query(Wallet).filter_by(user_id = login_session['id']).one_or_none()
@@ -494,10 +638,20 @@ def makeAnInvestment(product_id):
 		wallet.current_value = wallet.current_value - amount
 		session.add_all([wallet,inv])
 		session.commit()
-		flash("Successfully invested %s for %s. Thank you for your investment!" % (str(amount), product.team.name))
+		if login_session['language'] == 'he':
+			flash("הושקעו %s ל%s בהצלחה. תודה רבה על ההשקעה!"% (str(amount), product.team.name))
+		elif login_session['language'] == 'ar':
+			flash("تمت عملية الإستثمار بنجاح %s في فكرة %s شكرا جزيلا لقيامك بالإستثمار" % (str(amount), product.team.name))
+		else:
+			flash("Successfully invested %s for %s. Thank you for your investment!" % (str(amount), product.team.name))
 		return redirect(url_for('showProducts'))
 	else:
-		flash("You not have enough money to make this investment")
+		if login_session['language'] == 'he':
+			flash("אין לך מספיק כסף בכדי לבצע השקעה זו")
+		elif login_session['language'] == 'ar':
+			flash("ليس لديك نقود لعمل هذا الإستثمار")
+		else:
+			flash("You not have enough money to make this investment")
 		return redirect(url_for('showProduct', product_id = product_id))
 @app.route("/showDashboard")
 def showDashboard():
