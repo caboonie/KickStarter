@@ -12,4 +12,4 @@ psycopg2
 validate_email
 flask_mail
 flask_oauthlib
-pyDNS
+Py3DNS

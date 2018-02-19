@@ -7,19 +7,20 @@ Voting Website for Y2 Yearlong Group Projects
 All of the packages for this website can be installed using the pip installer.  
 
 <ul>
-<li>pandas(for database populating)
+<li>pandas(for database populating)</li>
 <li>flask</li>
-<li>Flask-HTTPAuth
-<li>Jinja2
-<li>passlib
-<li>python-dateutil
-<li>requests
-<li>SQLAlchemy
-<li>psycopg2
-<li>validate_email
-<li>flask_mail
-<li>flask_oauthlib
-<li>pyDNS</li> 
+<li>Flask-HTTPAuth</li>
+<li>Jinja2</li>
+<li>passlib</li>
+<li>python-dateutil</li>
+<li>requests</li>
+<li>SQLAlchemy</li>
+<li>psycopg2</li>
+<li>validate_email</li>
+<li>flask_mail</li>
+<li>flask_oauthlib</li>
+<li>Py3DNS</li>
+<!-- <li>pyDNS</li>  -->
 </ul>
 
 
