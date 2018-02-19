@@ -1,202 +1,117 @@
+
 {% extends "layout.html" %}
 {% block body %}
 
 
+{% if session['language'] == 'ar' %}
+	<style>
+		.body {
+			text-align: right;
+			direction: rtl;
+		}
 
-{%if session['language'] == 'ar'%}
-<style>
-li{text-align:right;}
+	</style>
 
+	<div class="body">
+		<h2>:آلية العمل </h2>
+		<div style="padding:20px;" dir="rtl">
+			<ul>
+				<li>سجل الدخول كمستخدم جديد و إحصل على 10,000 نقود <span><img class="meet-inline-logo" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span></li>
+				<li>إستخدم النقود من أجل الإستثمار في أفكار المشاريع التي عمل عليها الطلاب</li>
+				<li>تجول في هذا الموقع و شاهد مقاطع فيديو عن أفكار هذه المشاريع , شاهد الدعايات التجارية و الموقع الإلكتروني أيضا  </li>
+				<li>المشاريع التي تحصل على أكبر قدر من الإستثمار سوف تدخل في برنامج مسرعة الأعمال الناشئة و سوف تكون واضحة للعيان هذا الصيف </li>
+				<li>الحملة تبدأ في 2017\3\25 و تنتهي في 2017\4\1 لا تضيع فرصة التصويت قبل نهاية الحملة</li>
+			</ul>
+		</div>
 
-
-</style>
-
-<h2>:آلية العمل </h2>
-<ul>
-  <div  style="padding:30px;" dir="rtl">
-<li>سجل الدخول كمستخدم جديد و إحصل على 10,000 نقود<span><img style="position:relative; bottom:9px;" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span></li>
-
-<li>إستخدم النقود من أجل الإستثمار في أفكار المشاريع التي عمل عليها الطلاب</li>
-
-<li>تجول في هذا الموقع و شاهد مقاطع فيديو عن أفكار هذه المشاريع , شاهد الدعايات التجارية و الموقع الإلكتروني أيضا  </li>
-
-<li>المشاريع التي تحصل على أكبر قدر من الإستثمار سوف تدخل في برنامج مسرعة الأعمال الناشئة و سوف تكون واضحة للعيان هذا الصيف </li>
-
-<li>الحملة تبدأ في 2017\3\24 و تنتهي في 2017\3\31 لا تضيع فرصة التصويت قبل نهاية الحملة</li>
-
-</ul>
-</div>
-<div id="notify">
-<p>من فضلك قم بإضافة عنوان بريدك الإلكتروني في الأسفل حتى يتم إعلامك عندما تبدأ الحملة</p>
-<form action="{{url_for('notifyList')}}" method = 'post' value="Type your Email Address Here">
-  <input type="email" name="email">
-  <button type = "submit" name="Notify me">أعلمني</button><br>
-</form>
-</div>
-
-{%elif session['language'] == 'he'%}
-
-<style>
-li{text-align:right;
-direction:rtl;};
-
-</style>
-
-
-<h2>:איך זה עובד</h2>
-  <div  style="padding:30px;" dir="rtl">
-
-<ul>
-<li><span>הרשמו כמשתמשים חדשים וקבלו 10,000 מטבעות<img style="position:relative; bottom:9px;" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span></li>
-
-<li>השתמשו במטבעות ה-<span><img style="position:relative; bottom:9px;" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span> שלכם על מנת להשקיע ברעיונות לסטארט-אפים שאהבתם שהועלו על ידי התלמידים שלנו</li>
-
-<li>עיינו באתר על מנת לראות רעיונות לסטארט-אפים, צפו בפרסומות ועיינו באתר הראשוני שלהן</li>
-
-<li>הרעיונות שיקבלו את ההשקעות המירביות יכנסו למאיץ הסרטארט-אפים שלנו ויהיו זמינים לקהל הרחב כבר בקיץ הקרוב!</li>
-
-<li>הקמפיין מתחיל ב-24 למרץ ומסתיים ב-31 למרץ, 2017 - אל תפספסו את ההזדמנות להצביע</li>
-
-</ul>
-
-</div>
+		<div id="notify">
+			{% if timeline == "before" %}
+				<div class="before-notify">
+					<p>Add your email address below to be notified when the campaign begins.</p></br>
+					<form action="{{url_for('notifyList')}}" method = 'post' value="Type your Email Address Here">
+						<input  class="emailindex" type="email" name="email"  placeholder="email">
+						<button class="btn btn-success" type = "submit" name="Notify me">Notify Me</button><br>
+					</form>
+				</div>
+			{% elif timeline == "after" %}
+				<a href="/login"><button class="btn btn-success btn-lg" type = "submit" name="Notify me" disabled>فل نستثمر!</button></a>
+			{% else %}
+				<!-- during the competition -->
+				<a href="/login"><button class="btn btn-success btn-lg" type = "submit" name="Notify me">فل نستثمر!</button></a>
+			{% endif %}
+		</div>
+	</div>
 
 
+{% elif session['language'] == 'he' %}
+	<style>
+		.body {
+			text-align: right;
+			direction: rtl;
+		}
+
+	</style>
+
+	<div class="body">
+		<h2>:איך זה עובד</h2>
+		<div style="padding:20px;" dir="rtl">
+			<ul>
+				<li><span>הרשמו כמשתמשים חדשים וקבלו 10,000 מטבעות <img class="meet-inline-logo" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span></li>
+				<li>השתמשו במטבעות ה- <span><img class="meet-inline-logo" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span> שלכם על מנת להשקיע ברעיונות לסטארט-אפים שאהבתם שהועלו על ידי התלמידים שלנו</li>
+				<li>עיינו באתר על מנת לראות רעיונות לסטארט-אפים, צפו בפרסומות ועיינו באתר הראשוני שלהן</li>
+				<li>הרעיונות שיקבלו את ההשקעות המירביות יכנסו למאיץ הסרטארט-אפים שלנו ויהיו זמינים לקהל הרחב כבר בקיץ הקרוב!</li>
+				<li>הקמפיין מתחיל ב-25 למרץ ומסתיים ב-1 אַפּרִיל, 2017 - אל תפספסו את ההזדמנות להצביע</li>
+			</ul>
+		</div>
+
+		<div id="notify">
+			{% if timeline == "before" %}
+				<div class="before-notify">
+					<p>Add your email address below to be notified when the campaign begins.</p></br>
+					<form action="{{url_for('notifyList')}}" method = 'post' value="Type your Email Address Here">
+						<input  class="emailindex" type="email" name="email"  placeholder="email">
+						<button class="btn btn-success" type = "submit" name="Notify me">Notify Me</button><br>
+					</form>
+				</div>
+			{% elif timeline == "after" %}
+				<a href="/login"><button class="btn btn-success btn-lg" type="submit" name="Notify me" disabled>יאללה משקיעים!</button></a>
+			{% else %}
+				<a href="/login"><button class="btn btn-success btn-lg" type="submit" name="Notify me">יאללה משקיעים!</button></a>
+			{% endif %}
+		</div>
+	</div>
 
 
-<div id="notify">
-<p>רשמו את כתובת המייל שלכם על מנת שניצור אתכם קשר כאשר הקמפיין יתחיל</p>
-<form action="{{url_for('notifyList')}}" method = 'post' value="Type your Email Address Here">
-	<input type="email" name="email">
-	<button type = "submit" name="צרו איתי קשר">צרו איתי קשר</button><br>
-</form>
-</div>
+{% else %}
+	<div class="body">
+		<h2>How it works:</h2>
+		<ul style="padding: 20px;">
+			<li>Sign up as a new user and receive 10,000 <span><img class="meet-inline-logo" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span> coins.</li>
+			<li>Use your <span><img class="meet-inline-logo" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span> coins to invest in the student-created startup ideas you like most.</li>
+			<li>Look around this site to see videos of the startup ideas, watch their commercials and view their preliminary websites.</li>
+			<li>The startup ideas with the most investments will enter our Y3 Accelerator program and be available to the public this summer!</li>
+			<li>The campaign begins March 25th and closes on April 1st, 2017 - don't miss your chance to vote!</li>
+		</ul>
 
+		<div id="notify">
+			{% if timeline == "before" %}
+				<div class="before-notify">
+					<p>Add your email address below to be notified when the campaign begins.</p></br>
+					<form action="{{url_for('notifyList')}}" method='post' value="Type your Email Address Here">
+						<input class="emailindex" type="email" name="email"  placeholder="email">
+						<button class="btn btn-success" type = "submit" name="Notify me">Notify Me</button><br>
+					</form>
+				</div>
+			{% elif timeline == "after" %}
+				<a href="/login"><button class="btn btn-success btn-lg" type="submit" name="Notify me" disabled>Let's invest! </button></a>
+			{% else %}
+				<a href="/login"><button class="btn btn-success btn-lg" type="submit" name="Notify me">Let's invest!</button></a>
+			{% endif %}
+		</div>
 
-{%else%}
-<h2>How it works:</h2>
-<ul>
-<li>Sign up as a new user and receive 10,000 <span><img style="position:relative; bottom:9px;" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span>coins.</li>
+	</div>
 
-<li>Use your <span><img style="position:relative; bottom:9px;" src="{{url_for('static', filename='meet_logo_1.png')}}" height=30px></span>coins to invest in the student-created startup ideas you like most.</li>
-
-<li>Look around this site to see videos of the startup ideas, watch their commercials and view their preliminary websites.</li>
-
-<li>The startup ideas with the most investments will enter our Y3 Accelerator program and be available to the public this summer!</li>
-
-<li>The campaign begins March 24th and closes on March 31st, 2017 - don't miss your chance to vote!</li>
-
-</ul>
-
-<div id="notify">
-<p>Add your email address below to be notified when the campaign begins.</p>
-<form action="{{url_for('notifyList')}}" method = 'post' value="Type your Email Address Here">
-	<input type="email" name="email">
-	<button type = "submit" name="Notify me">Notify Me</button><br>
-</form>
-</div>
 {%endif%}
-
-<!--CAROUSEL 
-
-
- <div id="myCarousel" class="carousel slide" data-ride="carousel"  >
-    <!-- Indicators>
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" ></li>
-      <li data-target="#myCarousel" data-slide-to="1" ></li>
-      <li data-target="#myCarousel" data-slide-to="2" ></li>
-      <li data-target="#myCarousel" data-slide-to="3"></li>
-      <li data-target="#myCarousel" data-slide-to="4"></li>
-      <li data-target="#myCarousel" data-slide-to="5"></li>
-
-      <li data-target="#myCarousel" data-slide-to="6"></li>
-      <li data-target="#myCarousel" data-slide-to="7"></li>
-      <li data-target="#myCarousel" data-slide-to="8"></li>
-      <li data-target="#myCarousel" data-slide-to="9"></li>
-      <li data-target="#myCarousel" data-slide-to="10"></li>
-      <li data-target="#myCarousel" data-slide-to="11"></li>
-      <li data-target="#myCarousel" data-slide-to="12"></li>
-      <li data-target="#myCarousel" data-slide-to="13"></li>
-      <li data-target="#myCarousel" data-slide-to="14"></li>
-    </ol-->
-
-    <!-- Wrapper for slides 
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
-        <img src="{{url_for('static', filename='pictures/IMG_4047.JPG')}}" alt="MEET Students" width="90%" hreight="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4051.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4055.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4057.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4058.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4065.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4068.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4069.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4072.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4074.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4075.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4078.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4081.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4082.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="{{url_for('static', filename='pictures/IMG_4084.JPG')}}" alt="MEET Students" width="460" height="345">
-      </div>
-    </div>
-      
-    </div> 
-
-    <!-- Left and right controls >
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a
-  </div>
-</div>
-</div>-->
-
 
 
 {%endblock%}

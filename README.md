@@ -26,7 +26,7 @@ All of the packages for this website can be installed using the pip installer.
 1.  fill in the values of secrets.json with your own credentials.
 
 2. run python initializeDB.py
-3. in webapp.py, comment out lines 23 and 24 if you are using Python 3.
+3. comment out lines 23 and 24 if you are using Python 3.
 
 4.  in webapp.py toggle the comments on line 171 and line 172
 

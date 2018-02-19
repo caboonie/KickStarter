@@ -260,9 +260,7 @@ $(document).ready(function() {
 </script>
 
 <h1>Total Investments {{"${:,.2f}".format(totals|sum)}}</h1>
-<h2>Bronze Investors: {{bronze_investors|length}}</h2>
-<h2>Silver Investors: {{silver_investors|length}}</h2>
-<h2>Gold Investors: {{gold_investors|length}}</h2>
+
 
 
 <div id="holder">
@@ -311,4 +309,3 @@ $(document).ready(function() {
 
 </table>		
 
-<a href='{{url_for('showTeamActivity')}}'>View All Team Activity</a> 
