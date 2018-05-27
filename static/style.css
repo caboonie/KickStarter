@@ -81,6 +81,11 @@ h2 {
   /*margin: 0px;*/
 }
 
+.right-align {
+  text-align: right;
+  direction: rtl;
+}
+
 /*button {
   width: 100px;
   padding: 6.8px;
@@ -133,7 +138,7 @@ button.blue {
 }
 
 .message {
-  z-index: 100;
+  z-index: 200;
   /*margin: auto;*/
   /*text-align: center;*/
   width: 40%;
@@ -185,15 +190,16 @@ button.blue {
   margin: auto;
   padding: 0 30px 30px 30px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
+  /*background-color: rgba(255, 255, 255, 0.8);*/
+  background: #ededed;;
   border: 5px solid black;
-  width: 75%;
+  width: 90%;
 }
 
 .mainco {
   text-align: justify;
-  margin: 20px;
-
+  margin: 1%;
+  background: #ededed;
 /*  vertical-align: top;
   margin-right: 20px;
   background-color: white;
@@ -204,6 +210,7 @@ button.blue {
 .mainco p {
   /*padding: 0px 20px 0px 20px;*/
   color: black;
+  background: #ededed;
 }
 
 #product-url{
@@ -218,7 +225,26 @@ button.blue {
 }
 
 .video_mobile {
-  display: none;
+  border: 2px solid black;
+  /*display: none;*/
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    /*padding-top: 30px;*/
+    /*margin-bottom: 30px;*/
+    /*margin-top: 10%;*/
+    height: 0;
+    overflow: hidden;
+}
+
+.video-container iframe, .video-container object, .video-container embed {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
 }
 
 .invest-form {
@@ -229,7 +255,8 @@ button.blue {
 input.number {
   margin: auto;
   margin-top: 5px;
-  width: 250px;
+  max-width: 250px;
+  /*width: 250px;*/
   /*padding: 4px;*/
 }
 
@@ -288,7 +315,7 @@ img.products {
   /*height: 200px;*/
   /*min-width: 300px;*/
   width: 290px;
-  height: 250px;
+  height: 400px;
   margin: auto;
   margin-bottom: 30px;
 }
@@ -314,7 +341,7 @@ img.products {
 .panel-body {
   padding: 0;
   /*width: 400px;*/
-  height: 210px;
+  height: 360px;
   background-color: #BBBBBB;
 }
 
@@ -331,10 +358,11 @@ img.products {
   right: 0;
   /*top: 0;*/
   width: 290px;
-  height: 250px;
+  height: 400px;
   /*left: 15px;*/
   border-radius: 5px;
   background-color: rgba(0, 0, 0, .5);
+  /*background: #ededed*/
   /*opacity: 0.5;*/
   z-index: 100;
   display: block;
@@ -347,7 +375,7 @@ img.products {
   color: #fff;
   margin: auto;
   text-align: center;
-  padding-top: 40%;
+  padding-top: 50%;
   /*margin: auto;*/
 }
 
@@ -399,6 +427,10 @@ div#login-container {
   top: 1%;
 }
 
+#password-reset-div>p, #password-reset-div>h2, #password-reset-div>form>p {
+  color: black;
+}
+
 ul li {
   line-height: 34px;
   color: #fff;
@@ -417,23 +449,28 @@ ul li {
 footer {
   vertical-align: top;
   width: 100%;
+  background: rgba(0, 0, 0, 0.25);
   /*margin: auto;*/
   /*display: block;*/
 /*  padding-left: 10px;
   padding-right: 10px;*/
   text-align: center; 
   /*margin-top: 20px;*/
-  margin-bottom: 20px;	
+  /*margin-bottom: 20px;	*/
   position: fixed;
   bottom: 0px;
   z-index: -100;
 }
 
 img.footer {
-  height: 50px;
+  /*height: 70px;*/
   padding-left: 10px;
   padding-right: 10px;
-  vertical-align: top;
+  /*vertical-align: top;*/
+}
+
+#meet-img {
+  /*height: 40px;*/
 }
 
 p.black, a.black {
@@ -442,15 +479,12 @@ p.black, a.black {
 
 
 @media only screen and (max-device-width: 480px) {
-	.video_desktop{
+/*	.video_desktop{
     display:none;
   }
 
   .video_mobile {
     border: 2px solid black;
-/*    border-style: solid;
-    display: inline-block;
-    vertical-align: top;*/
   }
 
 	ul {
@@ -468,9 +502,6 @@ p.black, a.black {
 	.one {
     background-color: #1a1a1a;
     padding-top: 5px;
-    /* padding-bottom: 5px; */
-    /* height: 74px; */
-    /* padding-right: 10px; */
     padding-left: 10px;
     width: 100%;
     position: relative;
@@ -478,10 +509,6 @@ p.black, a.black {
     right: 0;
     left: 0;
   }
-
-/*	.body {
-    max-width: 99%;
-	}*/
 
 	footer {
     display:block
@@ -492,10 +519,6 @@ p.black, a.black {
     margin-bottom: 10px;
  
   }
-
-/*  #account_balance{
-  	width: 97%;
-  }*/
 
   .mainco {
     vertical-align: top;
@@ -508,7 +531,25 @@ p.black, a.black {
 
   #userbox{
     margin-bottom: 20px;
-  }
+  }*/
+
+
+
+  /*  #account_balance{
+    width: 97%;
+  }*/
+
+  /*  .body {
+    max-width: 99%;
+  }*/
+
+      /* padding-bottom: 5px; */
+    /* height: 74px; */
+    /* padding-right: 10px; */
+
+    /*    border-style: solid;
+    display: inline-block;
+    vertical-align: top;*/
 
 }
 /**
@@ -634,3 +675,4 @@ NAVY - #0C344B
 BLUE - #27A1A1
 
 GREY - #D7DBDB
+BACKGROUND - #ededed

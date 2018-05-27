@@ -55,21 +55,21 @@
         {% if 'id' in session %}
           <div class="navbar-text" id="userbox">
             {%if session['language'] == 'he'%}
-                .{{session['first_name']}} הנך כרגע רשום כ 
+                .{{session['email']}} הנך כרגע רשום כ 
               </div>
               <ul class="nav navbar-nav">
-                <li><a href = "{{url_for('logout')}}">התנתק </a></li>
+                <li><a href = "{{url_for('logout')}}"> התנתק </a></li>
               </ul>
 
             {%elif session['language']=='ar'%}
-                .{{session['first_name']}} تم تسجيل الدخول بإسم 
+                .{{session['email']}} تم تسجيل الدخول بإسم 
               </div>
               <ul class="nav navbar-nav">
                 <li><a href = "{{url_for('logout')}}">تسجيل الخروج</a></li>
               </ul>
            
             {%else%}
-                You are currently signed in as {{session['first_name']}}. 
+                You are currently signed in as {{session['email']}}. 
               </div>
               <ul class="nav navbar-nav">
                 <li><a href = "{{url_for('logout')}}">Log Out</a></li>
@@ -96,7 +96,7 @@
     {% if wallet is defined and wallet.current_value is defined%}
       <div id='account_balance'>
         {% if session['language'] == 'he'%}
-          <p> יתרת חשבונך כרגע הוא:{{"${:,.2f}".format(wallet.current_value)}}</p>
+          <p> יתרת חשבונך כרגע היא: {{"${:,.2f}".format(wallet.current_value)}}</p>
 
         {%elif session['language'] == 'ar'%}
           <p> رصيدك الحالي : {{"${:,.2f}".format(wallet.current_value)}}</p>
@@ -139,9 +139,16 @@
   
   
   <footer>
+    <div><h4 style="color: #A0A0A0;"> Sponsored by: </h4></div>
+    <img class="footer" src="{{url_for('static', filename='sponsors/logo-netherlandsbw-trans.png')}}" height="100px">
+    <a href="http://meet.mit.edu"><img id="meet-img" class="footer" src="{{url_for('static', filename='meet_logo_21.png')}}" height="30px"></a>
+    <img class="footer" src="{{url_for('static', filename='sponsors/usaidbw.png')}}" height="90px">
+    <img class="footer" src="{{url_for('static', filename='sponsors/mercycorpsbw.png')}}" height="75px">
+
+<!-- 
     <a href="http://meet.mit.edu"><img class="footer" src="{{url_for('static', filename='meet_logo_21.png')}}" height=40px></a>
     <img class="footer" src="{{url_for('static', filename='Y3Accelerator1.png')}}" height=100px>
-    <img class="footer" src="{{url_for('static', filename='usaid1.png')}}" height=110px>
+    <img class="footer" src="{{url_for('static', filename='usaid1.png')}}" height=110px> -->
   </footer>
 
 </body>

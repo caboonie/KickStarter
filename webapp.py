@@ -20,15 +20,19 @@ import json
 import string
 from flask import Markup
 
-
 #Comment these lines out for python3 
 # reload(sys) 
 # sys.setdefaultencoding("utf-8")
 
 CONFIG = json.loads(open('secrets.json', 'r').read())
 
-LAUNCHDATE = datetime.datetime.strptime('25/01/2018', "%d/%m/%Y").date()
-DEADLINE = datetime.datetime.strptime('31/03/2018', "%d/%m/%Y").date()
+## REAL DATES
+LAUNCHDATE = datetime.datetime.strptime('26/03/2018', "%d/%m/%Y").date()
+DEADLINE = datetime.datetime.strptime('09/04/2018', "%d/%m/%Y").date()
+
+## FAKE TESTING DATES
+# LAUNCHDATE = datetime.datetime.strptime('21/03/2018', "%d/%m/%Y").date()
+# DEADLINE = datetime.datetime.strptime('09/04/2018', "%d/%m/%Y").date()
 
 with open('silvermembers.txt') as f:
     silverMembers = f.read().splitlines()
@@ -37,7 +41,6 @@ with open('goldmembers.txt') as f:
 with open('admins.txt') as f:
     admins = f.read().splitlines()
 
-
 app = Flask(__name__)
 app.config['GOOGLE_ID'] = CONFIG['GOOGLE_ID']
 app.config['GOOGLE_SECRET'] = CONFIG['GOOGLE_SECRET']
@@ -45,8 +48,6 @@ app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 app.secret_key = CONFIG['SECRET_KEY']
 oauth = OAuth(app)
-
-
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -106,6 +107,10 @@ def verify_password(email, password):
         return False
     return True
 
+##################################
+#### LOGIN WITH GOOGLE ROUTES ####
+##################################
+
 @app.route('/loginWithGoogle')
 def loginWithGoogle():
 	#callback = 'https://meetcampaign.herokuapp.com/loginWithGoogle/authorized'
@@ -118,6 +123,8 @@ def authorized():
 		return 'Access denied: reason=%s error=%s' % (request.args['error_reason'], request.args['error_description'])
 	login_session['google_token'] = (resp['access_token'], '')
 	me = google.get('userinfo')
+	# print(me)
+	# print(me.data)
 	first_name = me.data['given_name']
 	last_name = me.data['family_name']
 	email = me.data['email']
@@ -149,44 +156,30 @@ def authorized():
 	login_session['id'] = newUser.id
 	login_session['last_name'] = newUser.last_name
 	login_session['group'] = newUser.group
-	if 'language' in login_session:
-		if login_session['language'] == 'ar':
-			flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا،  %s!" % newUser.first_name)
-		elif login_session['language']== 'he':
-			flash("התחברות מוצלחת. ברוכים הבאים, %s!" % newUser.first_name)
-	else:
-		flash("Login Successful. Welcome, %s!" % newUser.first_name)
+	login_session['email'] = newUser.email
+	# if 'language' in login_session:
+	# 	if login_session['language'] == 'ar':
+	# 		flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا،  %s!" % newUser.first_name)
+	# 	elif login_session['language']== 'he':
+	# 		flash("התחברות מוצלחת. ברוכים הבאים, %s!" % newUser.first_name)
+	# else:
+	# 	flash("Login Successful. Welcome, %s!" % newUser.first_name)
 	return redirect(url_for('showProducts'))
-
 
 @google.tokengetter
 def get_google_oauth_token():
     return login_session.get('google_token')
 
-@app.route("/")
-@app.route("/main")
-def showLandingPage():
-	if 'language' not in login_session:
-		login_session['language'] = 'en'
-	now = datetime.datetime.now().date()
-	if now < LAUNCHDATE:
-		timeline = "before"
-	elif now > DEADLINE:
-		flash(Markup("The competition has ended. Thank you for your participation! <a href='/viewResults'>Click Here to See Results</a>"))
-		timeline = "after"
-	else:
-		#during the competition
-		timeline = "during"
-	return render_template("prelaunchlanding.html", timeline=timeline)
 
-
-
+####################################
+#### LOGIN WITH FACEBOOK ROUTES ####
+####################################
 
 @app.route('/loginWithFacebook')
 def loginWithFacebook():
 	#Toggle the comments between the two lines below if you are running the app locally.
-	callback = url_for('facebook_authorized', next = request.args.get('next') or request.referrer or None, _external=True)
-	# callback = 'https://meetcampaign.herokuapp.com/loginWithFacebook/authorized'
+	# callback = url_for('facebook_authorized', next = request.args.get('next') or request.referrer or None, _external=True)
+	callback = 'https://meetcampaign18.herokuapp.com/loginWithFacebook/authorized'
 	return facebook.authorize(callback=callback)
 
 @app.route('/loginWithFacebook/authorized')
@@ -234,19 +227,43 @@ def facebook_authorized(resp):
 	login_session['id'] = newUser.id
 	login_session['last_name'] = newUser.last_name
 	login_session['group'] = newUser.group
-	if 'language' in login_session:
-		if login_session['language'] == 'ar':
-			flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا،  %s!" % newUser.first_name)
-		elif login_session['language']== 'he':
-			flash("התחברות מוצלחת. ברוכים הבאים, %s!" % newUser.first_name)
-	else:
-		flash("Login Successful. Welcome, %s!" % newUser.first_name)
+	login_session['email'] = newUser.email
+	# if 'language' in login_session:
+	# 	if login_session['language'] == 'ar':
+	# 		flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا،  %s!" % newUser.first_name)
+	# 	elif login_session['language']== 'he':
+	# 		flash("התחברות מוצלחת. ברוכים הבאים, %s!" % newUser.first_name)
+	# else:
+	# 	flash("Login Successful. Welcome, %s!" % newUser.first_name)
 	return redirect(url_for('showProducts'))
     
-
 @facebook.tokengetter
 def get_facebook_oauth_token():
     return login_session.get('oauth_token')
+
+##########################################
+########### ALL OTHER ROUTES #############
+##########################################
+
+@app.route("/")
+@app.route("/main")
+def showLandingPage():
+	if 'language' not in login_session:
+		login_session['language'] = 'en'
+	now = datetime.datetime.now().date()
+	if now < LAUNCHDATE:
+		timeline = "before"
+	elif now > DEADLINE:
+		flash(Markup("The competition has ended. Thank you for your participation! <a href='/viewResults'>Click Here to See Results</a>"))
+		timeline = "after"
+	else:
+		#during the competition
+		timeline = "during"
+	return render_template("prelaunchlanding.html", timeline=timeline)
+
+@app.route("/policies")
+def showPoliciesPage():
+	return render_template("policies.html")
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
@@ -314,8 +331,6 @@ def signup():
 				flash("This email is invalid. Please try again")
 			return redirect(url_for('signup'))
 
-		
-
 @app.route("/verify/<email>", methods = ['GET', 'POST'])
 def verify(email):
 	if 'language' not in login_session:
@@ -358,7 +373,7 @@ def verify(email):
 		elif login_session['language'] == 'ar':
 			flash("تم تفعيل الحساب بنجاح")
 		else:
-			flash("Account Verfied Successfully")
+			flash("Account Verified Successfully")
 		return redirect(url_for('login'))
 
 @app.route("/resendCode/<email>", methods = ['GET', 'POST'])
@@ -518,12 +533,12 @@ def login():
 				else:
 					flash("You must verify your account before continuing")
 				return redirect(url_for('verify', email = email))
-			if login_session['language'] == 'he':
-				flash("התחברות מוצלחת. ברוכים הבאים,%s!" % user.first_name)
-			elif login_session['language'] == 'ar':
-				flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا %s!" % user.first_name)
-			else:
-				flash("Login Successful. Welcome, %s!" % user.first_name)
+			# if login_session['language'] == 'he':
+			# 	flash("התחברות מוצלחת. ברוכים הבאים,%s!" % user.first_name)
+			# elif login_session['language'] == 'ar':
+			# 	flash("تم تسجيل الدخول بنجاح ! أهلا و سهلا %s!" % user.first_name)
+			# else:
+			# 	flash("Login Successful. Welcome, %s!" % user.first_name)
 			login_session['first_name'] = user.first_name
 			login_session['last_name'] = user.last_name	
 			login_session['email'] = email
@@ -542,6 +557,7 @@ def login():
 			else:
 				flash("Incorrect email/password combination")
 			return redirect(url_for('login'))
+
 @app.route('/logout')
 def logout():
 	if 'id' not in login_session:
@@ -592,7 +608,6 @@ def studentPortal():
 		total_investments += inv.amount
 	return render_template('teamPortal.html', user=user, team=team, comments = comments, total_investments = total_investments)
 
-
 @app.route("/updateSubmission", methods = ['POST'])
 def updateSubmission():
 	if 'language' not in login_session:
@@ -637,7 +652,6 @@ def addComment(team_id):
 	else:
 		flash("Thank you for your feedback!")
 	return redirect(request.referrer)
-
 
 @app.route("/products")
 def showProducts():
@@ -703,8 +717,9 @@ def makeAnInvestment(product_id):
 		elif login_session['language'] == 'ar':
 			flash("ليس لديك نقود لعمل هذا الإستثمار")
 		else:
-			flash("You not have enough money to make this investment")
+			flash("You do not have enough money to make this investment")
 		return redirect(url_for('showProduct', product_id = product_id))
+
 @app.route("/viewResults")
 def viewResults():
 	products = session.query(Product).all()
@@ -747,6 +762,7 @@ def showDashboard():
 		investorsdict[product.team.name] = len(product.investments)
 	rankings = sorted(rankdict.items(), key=operator.itemgetter(1),reverse=True)
 	return render_template('dashboard.html', totals = totals, products = products, bronze_investors = bronze_investors, silver_investors = silver_investors, gold_investors = gold_investors, rankings = rankings, investorsdict = investorsdict)
+
 @app.route("/teamActivity")
 def showTeamActivity():
 	if 'language' not in login_session:

@@ -1,28 +1,31 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<!-- http://localhost:5000/verify/runningman%40mit.edu -->
 
+<div id="password-reset-div">
 {% if session['language'] == 'he' %}
-<h1>אנא הכנס את קוד הווידוא<h1>
+	<p>אנא הכנס את קוד הווידוא</p><br>
 	<form action = "{{url_for('verify', email = user.email|string)}}", method = 'post'>
-<input type="text" name="code">
-<input type="submit" value="שלח">
+		<input class="form-control" type="text" name="code"><br>
+		<input class="btn btn-success" type="submit" value="שלח">
 	</form>
+
 {% elif session['language'] == 'ar' %}
-<h1>من فضلك قم بإدخال كود التفعيل الخاص بك<h1>
+	<p>من فضلك قم بإدخال كود التفعيل الخاص بك</p><br>
 	<form action = "{{url_for('verify', email = user.email|string)}}", method = 'post'>
-<input type="text" name="code">
-<input type="submit" value="أرسل">
+		<input class="form-control" type="text" name="code"><br>
+		<input class="btn btn-success" type="submit" value="أرسل">
 	</form>
+
 {% else %}
-
-
-<h1>Please Enter your account verification code<h1>
+	<p>Please enter your account verification code</p><br>
 	<form action = "{{url_for('verify', email = user.email|string)}}", method = 'post'>
-<input type="text" name="code">
-<input type="submit" value="submit">
+		<input class="form-control" type="text" name="code"><br>
+		<input class="btn btn-success" type="submit" value="submit">
 	</form>
-{% endif %}
 
+{% endif %}
+</div>
 
 {%endblock%}

@@ -6,8 +6,8 @@ from passlib.apps import custom_app_context as pwd_context
 import psycopg2
 import datetime
 import json
+import os
 CONFIG = json.loads(open('secrets.json', 'r').read())
-
 
 Base = declarative_base()
 class MailingList(Base):
@@ -77,6 +77,8 @@ class Product(Base):
 	comments = relationship("Comment", back_populates = "product") 
 	team_id = Column(Integer, ForeignKey('team.id'))
 	team = relationship("Team", back_populates="product")
+	# product_name = Column(String(255))
+	team_members = Column(String(255))
 	investments = relationship("Investment", back_populates= "product")
 	photo = Column(String(255), unique = True)
 	video = Column(String(255), unique = True)
@@ -101,8 +103,8 @@ class Investment(Base):
 	amount = Column(Float)
 	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
-# engine = create_engine(CONFIG['DATABASE_CONNECTION'])
-engine = create_engine('sqlite:///Test.db')
+engine = create_engine(CONFIG['DATABASE_CONNECTION'])
+# engine = create_engine('sqlite:////tmp/TestingReal.db')
 Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine, autoflush=False)
 session = DBSession()
