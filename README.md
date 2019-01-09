@@ -4,7 +4,16 @@ Voting Website for Y2 Yearlong Group Projects
 ## Running Locally:
 
 ### Required Packages
-All of the packages for this website can be installed using the pip installer.  
+All of the packages for this website can be installed using the pip installer.
+It's generally good practice to work within a virtual environment which can be created and then activated with the following:
+```
+virtualenv -p python3 venv
+source venv/bin/activate
+```
+Then, the dependencies can easily be installed by running:
+```
+pip install -r requirements.txt
+```
 
 <ul>
 <li>pandas(for database populating)</li>
@@ -24,14 +33,17 @@ All of the packages for this website can be installed using the pip installer.
 </ul>
 
 
-1.  fill in the values of secrets.json with your own credentials.
+1.  Fill in the values of secrets.json with your own credentials.
+	- The Google and Facebook IDs/secrets are for enabling oauth2 log-in using Google and Facebook.
+	- The MAIL_USERNAME/PASSWORD are for the email account to send emails out from. A meet email was created to send the automatic emails: noreply.meet.mit@gmail.com . Ask the staff for the password.
 
-2. run python initializeDB.py
-3. comment out lines 23 and 24 if you are using Python 3.
+2. Run python intializeDB.py
 
-4.  in webapp.py toggle the comments on line 171 and line 172
+3. In webapp.py, comment out lines 24 and 25 if you are using Python 3.
 
-5. run python webapp.py 
+4. In webapp.py, toggle the comments on line 181 and line 182
+
+5. Run python webapp.py 
 
 hopefully it should run on localhost:5000 without any problems.
 
