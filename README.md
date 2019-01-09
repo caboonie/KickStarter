@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 1.  Fill in the values of secrets.json with your own credentials.
 	- The Google and Facebook IDs/secrets are for enabling oauth2 log-in using Google and Facebook.
-	- The MAIL_USERNAME/PASSWORD are for the email account to send emails out from. A meet email was created to send the automatic emails: noreply.meet.mit@gmail.com . Ask the staff for the password.
+	- The MAIL_USERNAME/PASSWORD are for the email account to send emails out from. I created a gmail last year to send the automatic emails (noreply.meet.mit@gmail.com), but it may be helpful to create an actual meet.mit.edu email address for this.
 
 2. Run python intializeDB.py
 
